@@ -13,16 +13,19 @@ fi
 # swift
 if ! type "swift" > /dev/null; then
   echo "❌ Please install the Swift Language"
+  exit 1
 fi
 
 # git
 if ! type "git" > /dev/null; then
   echo "❌ Please install the git cli"
+  exit 1
 fi
 
 # github
 if ! type "gh" > /dev/null; then
   echo "❌ Please install Github cli (gh)"
+  exit 1
 fi
 
 # Maak een nieuwe directory voor het project
