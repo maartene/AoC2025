@@ -41,7 +41,7 @@ echo "✅ Successfully created a new Swift Package project"
 
 # Voeg een test target toe aan de Package.swift
 cat <<EOT > Package.swift
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -49,7 +49,7 @@ import PackageDescription
 let package = Package(
     name: "Day$1",
     platforms: [
-        .macOS(.v15)
+        .macOS(.v26)
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -124,6 +124,7 @@ DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
 Input.swift
+input.txt
 EOT
 
 echo "✅ Successfully created gitignore"
