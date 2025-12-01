@@ -1,6 +1,3 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
-
 func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = false) -> Int {
     let instructions = input.split(separator: "\n")
         .map { String($0) }
@@ -10,40 +7,25 @@ func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = 
     var zeroCount = 0
     for instruction in instructions {
         var rotationRemaining = instruction.amount
-        switch instruction.direction {
-        case .left:
-            while rotationRemaining > 0 {
-                currentPosition -= 1
-                if currentPosition < 0 {
-                    currentPosition += 100
-                }
-                if currentPosition == 0 {
-                    if countAllZeroes || rotationRemaining == 1
-                    {
-                        zeroCount += 1
-                    }
-                }
-                
-                rotationRemaining -= 1
+        
+        while rotationRemaining > 0 {
+            currentPosition += instruction.direction.increment
+            rotationRemaining -= 1
+            
+            if currentPosition < 0 {
+                currentPosition += 100
             }
-        case .right:
-            while rotationRemaining > 0 {
-                currentPosition += 1
-                if currentPosition > 99 {
-                    currentPosition -= 100
+            if currentPosition > 99 {
+                currentPosition -= 100
+            }
+            
+            if currentPosition == 0 {
+                if countAllZeroes || rotationRemaining == 0
+                {
+                    zeroCount += 1
                 }
-                
-                if currentPosition == 0 {
-                    if countAllZeroes || rotationRemaining == 1
-                    {
-                        zeroCount += 1
-                    }
-                }                
-                rotationRemaining -= 1
             }
         }
-        
-        print(instruction, currentPosition, zeroCount)
     }
     
     return zeroCount
@@ -53,6 +35,13 @@ struct Instruction {
     enum Direction: String {
         case left = "L"
         case right = "R"
+        
+        var increment: Int {
+            switch self {
+            case .left: return -1
+            case .right: return 1
+            }
+        }
     }
     
     let direction: Direction
