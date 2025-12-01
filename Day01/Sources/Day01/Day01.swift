@@ -28,7 +28,10 @@ struct Dial {
     private(set) var currentPosition = 50
     
     mutating func rotate(_ direction: Direction) {
-        currentPosition += direction.increment
+        switch direction {
+        case .left: currentPosition -= 1
+        case .right: currentPosition += 1
+        }
         
         if currentPosition < 0 {
             currentPosition += 100
@@ -42,18 +45,9 @@ struct Dial {
 enum Direction: String {
     case left = "L"
     case right = "R"
-    
-    var increment: Int {
-        switch self {
-        case .left: return -1
-        case .right: return 1
-        }
-    }
 }
 
 struct Instruction {
-    
-    
     let direction: Direction
     let amount: Int
     
@@ -68,11 +62,5 @@ struct Instruction {
         characters = Array(characters.dropFirst())
         let numberString = characters.map { String($0) }.joined()
         amount = Int(numberString)!
-    }
-}
-
-extension Instruction: CustomStringConvertible {
-    var description: String {
-        "\(direction.rawValue)\(amount)"
     }
 }
