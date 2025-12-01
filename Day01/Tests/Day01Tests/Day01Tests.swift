@@ -1,6 +1,23 @@
 import Testing
 @testable import Day01
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+@Suite struct `to get the first start on day 1`  {
+    let exampleInput =
+    """
+    L68
+    L30
+    R48
+    L5
+    R60
+    L55
+    L1
+    L99
+    R14
+    L82
+    """
+    
+    @Test func `the number of rotations ending on zero for the example input should be 3`() {
+        let numberOfRotations = getNumberOfRotationsEndingOnZero(for: exampleInput)
+        #expect(numberOfRotations == 3)
+    }
 }
