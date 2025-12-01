@@ -1,6 +1,5 @@
 func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = false) -> Int {
     let instructions = input.split(separator: "\n")
-        .map { String($0) }
         .map { Instruction(string: $0) }
     
     var dial = Dial()
@@ -51,13 +50,10 @@ struct Instruction {
     let direction: Direction
     let amount: Int
     
-    init(string: String) {
+    init(string: any StringProtocol) {
         var characters = string.map { $0 }
         
-        guard let direction = Direction(rawValue: String(characters[0])) else {
-            fatalError("Unexpected character: \(characters[0])")
-        }
-        self.direction = direction
+        self.direction = Direction(rawValue: String(characters[0]))!
         
         characters = Array(characters.dropFirst())
         let numberString = characters.map { String($0) }.joined()
