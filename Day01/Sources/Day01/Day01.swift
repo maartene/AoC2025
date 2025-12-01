@@ -3,23 +3,16 @@ func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = 
         .map { String($0) }
         .map { Instruction(string: $0) }
     
-    var currentPosition = 50
+    var dial = Dial()
     var zeroCount = 0
     for instruction in instructions {
         var rotationRemaining = instruction.amount
         
         while rotationRemaining > 0 {
-            currentPosition += instruction.direction.increment
+            dial.rotate(instruction.direction)
             rotationRemaining -= 1
             
-            if currentPosition < 0 {
-                currentPosition += 100
-            }
-            if currentPosition > 99 {
-                currentPosition -= 100
-            }
-            
-            if currentPosition == 0 {
+            if dial.currentPosition == 0 {
                 if countAllZeroes || rotationRemaining == 0
                 {
                     zeroCount += 1
@@ -31,18 +24,35 @@ func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = 
     return zeroCount
 }
 
-struct Instruction {
-    enum Direction: String {
-        case left = "L"
-        case right = "R"
+struct Dial {
+    private(set) var currentPosition = 50
+    
+    mutating func rotate(_ direction: Direction) {
+        currentPosition += direction.increment
         
-        var increment: Int {
-            switch self {
-            case .left: return -1
-            case .right: return 1
-            }
+        if currentPosition < 0 {
+            currentPosition += 100
+        }
+        if currentPosition > 99 {
+            currentPosition -= 100
         }
     }
+}
+
+enum Direction: String {
+    case left = "L"
+    case right = "R"
+    
+    var increment: Int {
+        switch self {
+        case .left: return -1
+        case .right: return 1
+        }
+    }
+}
+
+struct Instruction {
+    
     
     let direction: Direction
     let amount: Int
