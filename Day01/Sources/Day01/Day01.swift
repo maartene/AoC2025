@@ -13,14 +13,12 @@ func getNumberOfRotationsEndingOnZero(for input: String) -> Int {
         switch instruction.direction {
         case .left:
             currentPosition = currentPosition - instruction.amount
-            if currentPosition < 0 {
+            while currentPosition < 0 {
                 currentPosition += 100
             }
         case .right:
             currentPosition = currentPosition + instruction.amount
-            if currentPosition > 99 {
-                currentPosition -= 100
-            }
+            currentPosition = currentPosition % 100
         }
         endStates.append(currentPosition)
     }

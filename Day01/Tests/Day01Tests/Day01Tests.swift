@@ -20,4 +20,9 @@ import Testing
         let numberOfRotations = getNumberOfRotationsEndingOnZero(for: exampleInput)
         #expect(numberOfRotations == 3)
     }
-}
+    
+    // 301 is too low
+    @Test func `the number of rotations ending on zero for the actual input should be 1118`() {
+        let numberOfRotations = getNumberOfRotationsEndingOnZero(for: input)
+        #expect(numberOfRotations == 1118)
+    }}
