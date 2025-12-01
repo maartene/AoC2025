@@ -9,36 +9,50 @@ func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = 
     var currentPosition = 50
     var zeroCount = 0
     for instruction in instructions {
+        var rotationRemaining = instruction.amount
         switch instruction.direction {
         case .left:
-            currentPosition = currentPosition - instruction.amount
-            while currentPosition < 0 {
-                if countAllZeroes, currentPosition != 0 {
-                    zeroCount += 1
+            while rotationRemaining > 0 {
+                currentPosition -= 1
+                if currentPosition < 0 {
+                    currentPosition += 100
                 }
-                currentPosition += 100
+                if currentPosition == 0 {
+                    if countAllZeroes || rotationRemaining == 1
+                    {
+                        zeroCount += 1
+                    }
+                }
+                
+                rotationRemaining -= 1
             }
         case .right:
-            currentPosition = currentPosition + instruction.amount
-            while currentPosition > 99 {
-                if countAllZeroes, currentPosition != 0 {
-                    zeroCount += 1
+            while rotationRemaining > 0 {
+                currentPosition += 1
+                if currentPosition > 99 {
+                    currentPosition -= 100
                 }
-                currentPosition -= 100
+                
+                if currentPosition == 0 {
+                    if countAllZeroes || rotationRemaining == 1
+                    {
+                        zeroCount += 1
+                    }
+                }                
+                rotationRemaining -= 1
             }
         }
-        if currentPosition == 0 {
-            zeroCount += 1
-        }
+        
+        print(instruction, currentPosition, zeroCount)
     }
     
     return zeroCount
 }
 
 struct Instruction {
-    enum Direction {
-        case left
-        case right
+    enum Direction: String {
+        case left = "L"
+        case right = "R"
     }
     
     let direction: Direction
@@ -47,17 +61,19 @@ struct Instruction {
     init(string: String) {
         var characters = string.map { $0 }
         
-        let directionCharacter = characters[0]
-        switch directionCharacter {
-        case "R": direction = .right
-        case "L": direction = .left
-        default:
-            direction = .left
-            fatalError("Unexpected character: \(directionCharacter)")
+        guard let direction = Direction(rawValue: String(characters[0])) else {
+            fatalError("Unexpected character: \(characters[0])")
         }
+        self.direction = direction
         
         characters = Array(characters.dropFirst())
         let numberString = characters.map { String($0) }.joined()
         amount = Int(numberString)!
+    }
+}
+
+extension Instruction: CustomStringConvertible {
+    var description: String {
+        "\(direction.rawValue)\(amount)"
     }
 }

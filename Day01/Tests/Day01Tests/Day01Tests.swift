@@ -28,14 +28,13 @@ let exampleInput =
 }
 
 @Suite struct `to get the second star on day 1`  {
-    @Test func `the number of rotations ending on zero for the example input should be 6`() {
+    @Test func `the number of rotations going through or ending on zero for the example input should be 6`() {
         let numberOfRotations = getNumberOfRotationsEndingOnZero(for: exampleInput, countAllZeroes: true)
         #expect(numberOfRotations == 6)
     }
     
-    // 301 is too low
-//    @Test func `the number of rotations ending on zero for the actual input should be 1118`() {
-//        let numberOfRotations = getNumberOfRotationsEndingOnZero(for: input)
-//        #expect(numberOfRotations == 1118)
-//    }
+    @Test func `the number of rotations going through or ending on zero for the actual input should be 6289`() {
+        let numberOfRotations = getNumberOfRotationsEndingOnZero(for: input, countAllZeroes: true)
+        #expect(numberOfRotations == 6289)
+    }
 }
