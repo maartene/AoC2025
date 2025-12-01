@@ -1,7 +1,7 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
-func getNumberOfRotationsEndingOnZero(for input: String) -> Int {
+func getNumberOfRotationsEndingOnZero(for input: String, countAllZeroes: Bool = false) -> Int {
     let instructions = input.split(separator: "\n")
         .map { String($0) }
         .map { Instruction(string: $0) }
@@ -13,11 +13,19 @@ func getNumberOfRotationsEndingOnZero(for input: String) -> Int {
         case .left:
             currentPosition = currentPosition - instruction.amount
             while currentPosition < 0 {
+                if countAllZeroes, currentPosition != 0 {
+                    zeroCount += 1
+                }
                 currentPosition += 100
             }
         case .right:
             currentPosition = currentPosition + instruction.amount
-            currentPosition = currentPosition % 100
+            while currentPosition > 99 {
+                if countAllZeroes, currentPosition != 0 {
+                    zeroCount += 1
+                }
+                currentPosition -= 100
+            }
         }
         if currentPosition == 0 {
             zeroCount += 1
