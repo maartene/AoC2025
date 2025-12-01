@@ -6,10 +6,9 @@ func getNumberOfRotationsEndingOnZero(for input: String) -> Int {
         .map { String($0) }
         .map { Instruction(string: $0) }
     
-    var endStates = [50]
-    
+    var currentPosition = 50
+    var zeroCount = 0
     for instruction in instructions {
-        var currentPosition = endStates.last!
         switch instruction.direction {
         case .left:
             currentPosition = currentPosition - instruction.amount
@@ -20,10 +19,12 @@ func getNumberOfRotationsEndingOnZero(for input: String) -> Int {
             currentPosition = currentPosition + instruction.amount
             currentPosition = currentPosition % 100
         }
-        endStates.append(currentPosition)
+        if currentPosition == 0 {
+            zeroCount += 1
+        }
     }
     
-    return endStates.count(where: { $0 == 0 })
+    return zeroCount
 }
 
 struct Instruction {
