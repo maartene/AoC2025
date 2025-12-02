@@ -1,17 +1,10 @@
 import Foundation
 
 func sumOfInvalidIdsIn(_ input: String) -> Int {
-    let rangeStrings = input.split(separator: ",")
-    var ranges: [(lowerBound: Int, upperBound: Int)] = []
-    for rangeString in rangeStrings {
-        let lowerBoundString = rangeString.split(separator: "-")[0]
-        let upperBoundString = rangeString.split(separator: "-")[1]
-        ranges.append((Int(lowerBoundString)!, Int(upperBoundString)!))
-    }
-    
-    let invalidIDs = ranges.map {
-        invalidIDsIn($0.lowerBound ... $0.upperBound)
-    }
+    let invalidIDs = inputToRanges(input)
+        .map {
+            invalidIDsIn($0)
+        }
     
     return invalidIDs
         .flatMap { $0 }
@@ -32,3 +25,13 @@ func invalidIDsIn(_ range: ClosedRange<Int>) -> [Int] {
     return result
 }
 
+private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
+    let rangeStrings = input.split(separator: ",")
+    var ranges: [ClosedRange<Int>] = []
+    for rangeString in rangeStrings {
+        let lowerBoundString = rangeString.split(separator: "-")[0]
+        let upperBoundString = rangeString.split(separator: "-")[1]
+        ranges.append(Int(lowerBoundString)! ... Int(upperBoundString)!)
+    }
+    return ranges
+}
