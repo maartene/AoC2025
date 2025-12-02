@@ -16,6 +16,10 @@ func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
     for number in range.lowerBound ... range.upperBound {
         let numberString = String(number)
         
+        if numberString.count % 2 == 1 {
+            continue
+        }
+        
         let subsequence = numberString.dropLast(numberString.count / 2)
         
         if numberString.replacingOccurrences(of: subsequence, with: "aa") == "aaaa" {
@@ -39,4 +43,34 @@ private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
 // MARK: Part 2
 func sumOfInvalidIdsAllowingMultipleRepeats(_ input: String) -> Int {
     4174379265
+}
+
+func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
+    var result = [Int]()
+    for number in range.lowerBound ... range.upperBound {
+        result.append(contentsOf: invalidIDsInNumber(number))
+    }
+    return result
+}
+
+private func invalidIDsInNumber(_ number: Int) -> [Int] {
+    let numberString = String(number)
+    var result = [Int]()
+    let maxSubSequenceLength = numberString.count / 2
+    
+    for subSequenceLength in 1...maxSubSequenceLength {
+        if numberString.count % subSequenceLength != 0 {
+            continue
+        }
+        
+        let subsequence = String(numberString.prefix(subSequenceLength))
+        
+        let matches = numberString.replacingOccurrences(of: subsequence, with: "a")
+        
+        if matches == String(repeating: "a", count: numberString.count / subSequenceLength) {
+            result.append(number)
+        }
+    }
+    
+    return result
 }
