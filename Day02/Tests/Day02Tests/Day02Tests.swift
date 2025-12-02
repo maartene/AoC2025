@@ -12,4 +12,8 @@ let exampleInput =
     @Test func `the sum of all invalid IDs in the example input should be 1227775554`() {
         #expect(sumOfInvalidIdsIn(exampleInput) == 1227775554)
     }
+    
+    @Test func `the invalid ID in the range 95...105 should be 99`() {
+        #expect(invalidIDsIn(lowerBound: 95, upperBound: 105) == [99])
+    }
 }
