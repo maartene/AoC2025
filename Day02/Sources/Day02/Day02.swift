@@ -45,28 +45,29 @@ func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
     
     func invalidIDsInNumber(_ number: Int) -> Set<Int> {
         let numberString = String(number)
+        let maxSubSequenceLength = numberString.count / 2
+        
         guard numberString.count > 1 else {
             return []
         }
         
-        var result = Set<Int>()
-        let maxSubSequenceLength = numberString.count / 2
-        
-        for subSequenceLength in 1...maxSubSequenceLength {
-            if numberString.count % subSequenceLength > 0 {
-                continue
-            }
-            
-            let subsequence = String(numberString.prefix(subSequenceLength))
-            
-            let matches = numberString.replacingOccurrences(of: subsequence, with: "a")
-            
-            if matches == String(repeating: "a", count: numberString.count / subSequenceLength) {
+        return (1 ... maxSubSequenceLength).reduce(into: Set<Int>()) { result, subSequenceLength in
+            if checkNumberString(numberString, subSequenceLength: subSequenceLength) {
                 result.insert(number)
             }
         }
+    }
+    
+    func checkNumberString(_ numberString: String, subSequenceLength: Int) -> Bool {
+        guard numberString.count % subSequenceLength == 0 else {
+            return false
+        }
         
-        return result
+        let subsequence = String(numberString.prefix(subSequenceLength))
+        
+        let matches = numberString.replacingOccurrences(of: subsequence, with: "a")
+        
+        return matches == String(repeating: "a", count: numberString.count / subSequenceLength)
     }
 }
 
