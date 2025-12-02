@@ -42,7 +42,14 @@ private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
 
 // MARK: Part 2
 func sumOfInvalidIdsAllowingMultipleRepeats(_ input: String) -> Int {
-    4174379265
+    let invalidIDs = inputToRanges(input)
+        .map {
+            invalidIDsAllowingMultipleRepeats($0)
+        }
+    
+    return invalidIDs
+        .flatMap { $0 }
+        .reduce(0, +)
 }
 
 func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
