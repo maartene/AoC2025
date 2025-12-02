@@ -44,4 +44,8 @@ let exampleInput =
     ]) func `the invalid ID in the range should be the expected result`(testcase: (range: ClosedRange<Int>, expectedResult: [Int])) {
         #expect(invalidIDsAllowingMultipleRepeats(testcase.range) == testcase.expectedResult)
     }
+    
+    @Test func `the sum of all invalid IDs in the actual input should be 44143124633`() {
+        #expect(sumOfInvalidIdsAllowingMultipleRepeats(input) == 44143124633)
+    }
 }

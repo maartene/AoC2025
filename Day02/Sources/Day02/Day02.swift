@@ -62,6 +62,10 @@ func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
 
 private func invalidIDsInNumber(_ number: Int) -> Set<Int> {
     let numberString = String(number)
+    guard numberString.count > 1 else {
+        return []
+    }
+    
     var result = Set<Int>()
     let maxSubSequenceLength = numberString.count / 2
     
