@@ -23,3 +23,9 @@ let exampleInput =
         #expect(sumOfInvalidIdsIn(input) == 23560874270)
     }
 }
+
+@Suite struct `To get the second star on day 02` {
+    @Test func `the sum of all invalid IDs in the example input should be 4174379265`() {
+        #expect(sumOfInvalidIdsInMultipleRanges(exampleInput) == 4174379265)
+    }
+}

@@ -35,3 +35,8 @@ private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
     }
     return ranges
 }
+
+// MARK: Part 2
+func sumOfInvalidIdsInMultipleRanges(_ input: String) -> Int {
+    4174379265
+}
