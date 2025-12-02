@@ -2,10 +2,10 @@ import Foundation
 
 // MARK: Part 1
 func part1(_ input: String) -> Int {
-    sumOfInvalidIdsIn(input, using: invalidIDsInOneRepeatOnly)
+    sumOfInvalidIdsIn(input, using: invalidIDsOneRepeatOnly)
 }
 
-func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
+func invalidIDsOneRepeatOnly(in range: ClosedRange<Int>) -> [Int] {
     return range.filter {
         checkNumber($0)
     }
@@ -13,7 +13,7 @@ func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
     func checkNumber(_ number: Int) -> Bool {
         let numberString = String(number)
         
-        guard numberString.count % 2 == 0 else {
+        guard numberString.count.isMultiple(of: 2) else {
             return false
         }
         
@@ -28,7 +28,7 @@ func part2(_ input: String) -> Int {
     sumOfInvalidIdsIn(input, using: invalidIDsAllowingMultipleRepeats)
 }
 
-func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
+func invalidIDsAllowingMultipleRepeats(in range: ClosedRange<Int>) -> [Int] {
     return range.reduce(into: [Int]()) { result, number in
         result.append(contentsOf: invalidIDsInNumber(number))
     }
@@ -49,7 +49,7 @@ func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
     }
     
     func checkNumberString(_ numberString: String, subSequenceLength: Int) -> Bool {
-        guard numberString.count % subSequenceLength == 0 else {
+        guard numberString.count.isMultiple(of: subSequenceLength) else {
             return false
         }
         

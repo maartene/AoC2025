@@ -16,7 +16,7 @@ let exampleInput =
 //        (1698522...1698528, []),
 //        (1188511880...1188511890, [1188511885]),
     ]) func `the invalid ID in the range should be the expected result`(testcase: (range: ClosedRange<Int>, expectedResult: [Int])) {
-        #expect(invalidIDsInOneRepeatOnly(testcase.range) == testcase.expectedResult)
+        #expect(invalidIDsOneRepeatOnly(in: testcase.range) == testcase.expectedResult)
     }
     
     @Test func `the sum of all invalid IDs in the actual input should be 23560874270`() {
@@ -42,7 +42,7 @@ let exampleInput =
         (824824821...824824827, [824824824]),
         (2121212118...2121212124, [2121212121])
     ]) func `the invalid ID in the range should be the expected result`(testcase: (range: ClosedRange<Int>, expectedResult: [Int])) {
-        #expect(invalidIDsAllowingMultipleRepeats(testcase.range) == testcase.expectedResult)
+        #expect(invalidIDsAllowingMultipleRepeats(in: testcase.range) == testcase.expectedResult)
     }
     
     @Test func `the sum of all invalid IDs in the actual input should be 44143124633`() {
