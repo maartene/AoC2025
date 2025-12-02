@@ -10,7 +10,9 @@ let exampleInput =
     }
     
     @Test(arguments: [
+        (11, 22, [11,22]),
         (95, 105, [99]),
+        (998, 1012, [1010]),
         (1698522, 1698528, [])
     ]) func `the invalid ID in the range should be the expected result`(testcase: (lowerBound: Int, upperBound: Int, expectedResult: [Int])) {
         #expect(invalidIDsIn(lowerBound: testcase.lowerBound, upperBound: testcase.upperBound) == testcase.expectedResult)
