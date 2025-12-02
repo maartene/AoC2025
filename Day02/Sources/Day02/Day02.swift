@@ -39,37 +39,35 @@ func part2(_ input: String) -> Int {
 }
 
 func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
-    var result = [Int]()
-    for number in range.lowerBound ... range.upperBound {
+    return range.reduce(into: [Int]()) { result, number in
         result.append(contentsOf: invalidIDsInNumber(number))
     }
-    return result
-}
-
-private func invalidIDsInNumber(_ number: Int) -> Set<Int> {
-    let numberString = String(number)
-    guard numberString.count > 1 else {
-        return []
-    }
     
-    var result = Set<Int>()
-    let maxSubSequenceLength = numberString.count / 2
-    
-    for subSequenceLength in 1...maxSubSequenceLength {
-        if numberString.count % subSequenceLength > 0 {
-            continue
+    func invalidIDsInNumber(_ number: Int) -> Set<Int> {
+        let numberString = String(number)
+        guard numberString.count > 1 else {
+            return []
         }
         
-        let subsequence = String(numberString.prefix(subSequenceLength))
+        var result = Set<Int>()
+        let maxSubSequenceLength = numberString.count / 2
         
-        let matches = numberString.replacingOccurrences(of: subsequence, with: "a")
-        
-        if matches == String(repeating: "a", count: numberString.count / subSequenceLength) {
-            result.insert(number)
+        for subSequenceLength in 1...maxSubSequenceLength {
+            if numberString.count % subSequenceLength > 0 {
+                continue
+            }
+            
+            let subsequence = String(numberString.prefix(subSequenceLength))
+            
+            let matches = numberString.replacingOccurrences(of: subsequence, with: "a")
+            
+            if matches == String(repeating: "a", count: numberString.count / subSequenceLength) {
+                result.insert(number)
+            }
         }
+        
+        return result
     }
-    
-    return result
 }
 
 // MARK: Utils
