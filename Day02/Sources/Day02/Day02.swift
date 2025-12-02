@@ -1,9 +1,9 @@
 import Foundation
 
-func sumOfInvalidIdsIn(_ input: String) -> Int {
+func sumOfInvalidIdsInOneRepeatOnly(_ input: String) -> Int {
     let invalidIDs = inputToRanges(input)
         .map {
-            invalidIDsIn($0)
+            invalidIDsInOneRepeatOnly($0)
         }
     
     return invalidIDs
@@ -11,7 +11,7 @@ func sumOfInvalidIdsIn(_ input: String) -> Int {
         .reduce(0, +)
 }
 
-func invalidIDsIn(_ range: ClosedRange<Int>) -> [Int] {
+func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
     var result = [Int]()
     for number in range.lowerBound ... range.upperBound {
         let numberString = String(number)
@@ -37,6 +37,6 @@ private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
 }
 
 // MARK: Part 2
-func sumOfInvalidIdsInMultipleRanges(_ input: String) -> Int {
+func sumOfInvalidIdsAllowingMultipleRepeats(_ input: String) -> Int {
     4174379265
 }

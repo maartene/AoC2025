@@ -6,7 +6,7 @@ let exampleInput =
 
 @Suite struct `To get the first star on day 02` {
     @Test func `the sum of all invalid IDs in the example input should be 1227775554`() {
-        #expect(sumOfInvalidIdsIn(exampleInput) == 1227775554)
+        #expect(sumOfInvalidIdsInOneRepeatOnly(exampleInput) == 1227775554)
     }
     
     @Test(arguments: [
@@ -16,16 +16,16 @@ let exampleInput =
         (1698522...1698528, []),
         (1188511880...1188511890, [1188511885]),
     ]) func `the invalid ID in the range should be the expected result`(testcase: (range: ClosedRange<Int>, expectedResult: [Int])) {
-        #expect(invalidIDsIn(testcase.range) == testcase.expectedResult)
+        #expect(invalidIDsInOneRepeatOnly(testcase.range) == testcase.expectedResult)
     }
     
     @Test func `the sum of all invalid IDs in the actual input should be 23560874270`() {
-        #expect(sumOfInvalidIdsIn(input) == 23560874270)
+        #expect(sumOfInvalidIdsInOneRepeatOnly(input) == 23560874270)
     }
 }
 
 @Suite struct `To get the second star on day 02` {
     @Test func `the sum of all invalid IDs in the example input should be 4174379265`() {
-        #expect(sumOfInvalidIdsInMultipleRanges(exampleInput) == 4174379265)
+        #expect(sumOfInvalidIdsAllowingMultipleRepeats(exampleInput) == 4174379265)
     }
 }
