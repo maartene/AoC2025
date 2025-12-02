@@ -1,16 +1,6 @@
 import Foundation
 
-func sumOfInvalidIdsIn(_ input: String, using checker: (ClosedRange<Int>) -> [Int]) -> Int {
-    let invalidIDs = inputToRanges(input)
-        .map {
-            checker($0)
-        }
-    
-    return invalidIDs
-        .flatMap { $0 }
-        .reduce(0, +)
-}
-
+// MARK: Part 1
 func part1(_ input: String) -> Int {
     sumOfInvalidIdsIn(input, using: invalidIDsInOneRepeatOnly)
 }
@@ -71,7 +61,18 @@ func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
     }
 }
 
-// MARK: Utils
+// MARK: Common
+private func sumOfInvalidIdsIn(_ input: String, using checker: (ClosedRange<Int>) -> [Int]) -> Int {
+    let invalidIDs = inputToRanges(input)
+        .map {
+            checker($0)
+        }
+    
+    return invalidIDs
+        .flatMap { $0 }
+        .reduce(0, +)
+}
+
 private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
     let rangeStrings = input.split(separator: ",")
     var ranges: [ClosedRange<Int>] = []
