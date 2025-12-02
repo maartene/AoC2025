@@ -1,16 +1,17 @@
 import Foundation
 
 func sumOfInvalidIdsIn(_ input: String) -> Int {
-    let invalidIDs = [
-        [11, 22],
-        invalidIDsIn(lowerBound: 95, upperBound: 115),
-        [1010],
-        [1188511885],
-        [222222],
-        invalidIDsIn(lowerBound: 1698522, upperBound: 1698528),
-        [446446],
-        [38593859]
-    ]
+    let rangeStrings = input.split(separator: ",")
+    var ranges: [(lowerBound: Int, upperBound: Int)] = []
+    for rangeString in rangeStrings {
+        let lowerBoundString = rangeString.split(separator: "-")[0]
+        let upperBoundString = rangeString.split(separator: "-")[1]
+        ranges.append((Int(lowerBoundString)!, Int(upperBoundString)!))
+    }
+    
+    let invalidIDs = ranges.map {
+        invalidIDsIn(lowerBound: $0.lowerBound, upperBound: $0.upperBound)
+    }
     
     return invalidIDs
         .flatMap { $0 }
