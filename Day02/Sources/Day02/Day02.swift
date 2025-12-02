@@ -53,9 +53,9 @@ func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
     return result
 }
 
-private func invalidIDsInNumber(_ number: Int) -> [Int] {
+private func invalidIDsInNumber(_ number: Int) -> Set<Int> {
     let numberString = String(number)
-    var result = [Int]()
+    var result = Set<Int>()
     let maxSubSequenceLength = numberString.count / 2
     
     for subSequenceLength in 1...maxSubSequenceLength {
@@ -68,7 +68,7 @@ private func invalidIDsInNumber(_ number: Int) -> [Int] {
         let matches = numberString.replacingOccurrences(of: subsequence, with: "a")
         
         if matches == String(repeating: "a", count: numberString.count / subSequenceLength) {
-            result.append(number)
+            result.insert(number)
         }
     }
     
