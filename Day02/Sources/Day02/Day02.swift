@@ -10,7 +10,7 @@ func sumOfInvalidIdsIn(_ input: String) -> Int {
     }
     
     let invalidIDs = ranges.map {
-        invalidIDsIn(lowerBound: $0.lowerBound, upperBound: $0.upperBound)
+        invalidIDsIn($0.lowerBound ... $0.upperBound)
     }
     
     return invalidIDs
@@ -18,9 +18,9 @@ func sumOfInvalidIdsIn(_ input: String) -> Int {
         .reduce(0, +)
 }
 
-func invalidIDsIn(lowerBound: Int, upperBound: Int) -> [Int] {
+func invalidIDsIn(_ range: ClosedRange<Int>) -> [Int] {
     var result = [Int]()
-    for number in lowerBound ... upperBound {
+    for number in range.lowerBound ... range.upperBound {
         let numberString = String(number)
         
         let subsequence = numberString.dropLast(numberString.count / 2)
@@ -31,3 +31,4 @@ func invalidIDsIn(lowerBound: Int, upperBound: Int) -> [Int] {
     }
     return result
 }
+

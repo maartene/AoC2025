@@ -10,13 +10,13 @@ let exampleInput =
     }
     
     @Test(arguments: [
-        (11, 22, [11,22]),
-        (95, 105, [99]),
-        (998, 1012, [1010]),
-        (1698522, 1698528, []),
-        (1188511880, 1188511890, [1188511885]),
-    ]) func `the invalid ID in the range should be the expected result`(testcase: (lowerBound: Int, upperBound: Int, expectedResult: [Int])) {
-        #expect(invalidIDsIn(lowerBound: testcase.lowerBound, upperBound: testcase.upperBound) == testcase.expectedResult)
+        (11...22, [11,22]),
+        (95...105, [99]),
+        (998...1012, [1010]),
+        (1698522...1698528, []),
+        (1188511880...1188511890, [1188511885]),
+    ]) func `the invalid ID in the range should be the expected result`(testcase: (range: ClosedRange<Int>, expectedResult: [Int])) {
+        #expect(invalidIDsIn(testcase.range) == testcase.expectedResult)
     }
     
     @Test func `the sum of all invalid IDs in the actual input should be 23560874270`() {
