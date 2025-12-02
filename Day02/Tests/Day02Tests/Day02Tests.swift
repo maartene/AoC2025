@@ -18,4 +18,8 @@ let exampleInput =
     ]) func `the invalid ID in the range should be the expected result`(testcase: (lowerBound: Int, upperBound: Int, expectedResult: [Int])) {
         #expect(invalidIDsIn(lowerBound: testcase.lowerBound, upperBound: testcase.upperBound) == testcase.expectedResult)
     }
+    
+    @Test func `the sum of all invalid IDs in the actual input should be 23560874270`() {
+        #expect(sumOfInvalidIdsIn(input) == 23560874270)
+    }
 }

@@ -25,10 +25,9 @@ func invalidIDsIn(lowerBound: Int, upperBound: Int) -> [Int] {
         
         let subsequence = numberString.dropLast(numberString.count / 2)
         
-        if numberString.replacingOccurrences(of: subsequence, with: "") == "" {
+        if numberString.replacingOccurrences(of: subsequence, with: "aa") == "aaaa" {
             result.append(number)
         }
     }
-    
     return result
 }
