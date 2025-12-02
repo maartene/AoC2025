@@ -6,7 +6,7 @@ let exampleInput =
 
 @Suite struct `To get the first star on day 02` {
     @Test func `the sum of all invalid IDs in the example input should be 1227775554`() {
-        #expect(sumOfInvalidIdsInOneRepeatOnly(exampleInput) == 1227775554)
+        #expect(part1(exampleInput) == 1227775554)
     }
     
     @Test(arguments: [
@@ -20,13 +20,13 @@ let exampleInput =
     }
     
     @Test func `the sum of all invalid IDs in the actual input should be 23560874270`() {
-        #expect(sumOfInvalidIdsInOneRepeatOnly(input) == 23560874270)
+        #expect(part1(input) == 23560874270)
     }
 }
 
 @Suite struct `To get the second star on day 02` {
     @Test func `the sum of all invalid IDs in the example input should be 4174379265`() {
-        #expect(sumOfInvalidIdsAllowingMultipleRepeats(exampleInput) == 4174379265)
+        #expect(part2(exampleInput) == 4174379265)
     }
     
     @Test(arguments: [
@@ -46,6 +46,6 @@ let exampleInput =
     }
     
     @Test func `the sum of all invalid IDs in the actual input should be 44143124633`() {
-        #expect(sumOfInvalidIdsAllowingMultipleRepeats(input) == 44143124633)
+        #expect(part2(input) == 44143124633)
     }
 }

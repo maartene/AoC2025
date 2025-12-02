@@ -1,9 +1,9 @@
 import Foundation
 
-func sumOfInvalidIdsInOneRepeatOnly(_ input: String) -> Int {
+func sumOfInvalidIdsIn(_ input: String, using checker: (ClosedRange<Int>) -> [Int]) -> Int {
     let invalidIDs = inputToRanges(input)
         .map {
-            invalidIDsInOneRepeatOnly($0)
+            checker($0)
         }
     
     return invalidIDs
@@ -11,12 +11,16 @@ func sumOfInvalidIdsInOneRepeatOnly(_ input: String) -> Int {
         .reduce(0, +)
 }
 
+func part1(_ input: String) -> Int {
+    sumOfInvalidIdsIn(input, using: invalidIDsInOneRepeatOnly)
+}
+
 func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
     var result = [Int]()
     for number in range.lowerBound ... range.upperBound {
         let numberString = String(number)
         
-        if numberString.count % 2 == 1 {
+        if numberString.count % 2 > 0 {
             continue
         }
         
@@ -29,27 +33,9 @@ func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
     return result
 }
 
-private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
-    let rangeStrings = input.split(separator: ",")
-    var ranges: [ClosedRange<Int>] = []
-    for rangeString in rangeStrings {
-        let lowerBoundString = rangeString.split(separator: "-")[0]
-        let upperBoundString = rangeString.split(separator: "-")[1]
-        ranges.append(Int(lowerBoundString)! ... Int(upperBoundString)!)
-    }
-    return ranges
-}
-
 // MARK: Part 2
-func sumOfInvalidIdsAllowingMultipleRepeats(_ input: String) -> Int {
-    let invalidIDs = inputToRanges(input)
-        .map {
-            invalidIDsAllowingMultipleRepeats($0)
-        }
-    
-    return invalidIDs
-        .flatMap { $0 }
-        .reduce(0, +)
+func part2(_ input: String) -> Int {
+    sumOfInvalidIdsIn(input, using: invalidIDsAllowingMultipleRepeats)
 }
 
 func invalidIDsAllowingMultipleRepeats(_ range: ClosedRange<Int>) -> [Int] {
@@ -70,7 +56,7 @@ private func invalidIDsInNumber(_ number: Int) -> Set<Int> {
     let maxSubSequenceLength = numberString.count / 2
     
     for subSequenceLength in 1...maxSubSequenceLength {
-        if numberString.count % subSequenceLength != 0 {
+        if numberString.count % subSequenceLength > 0 {
             continue
         }
         
@@ -84,4 +70,16 @@ private func invalidIDsInNumber(_ number: Int) -> Set<Int> {
     }
     
     return result
+}
+
+// MARK: Utils
+private func inputToRanges(_ input: String) -> [ClosedRange<Int>] {
+    let rangeStrings = input.split(separator: ",")
+    var ranges: [ClosedRange<Int>] = []
+    for rangeString in rangeStrings {
+        let lowerBoundString = rangeString.split(separator: "-")[0]
+        let upperBoundString = rangeString.split(separator: "-")[1]
+        ranges.append(Int(lowerBoundString)! ... Int(upperBoundString)!)
+    }
+    return ranges
 }
