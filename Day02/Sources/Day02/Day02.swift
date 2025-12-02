@@ -16,21 +16,21 @@ func part1(_ input: String) -> Int {
 }
 
 func invalidIDsInOneRepeatOnly(_ range: ClosedRange<Int>) -> [Int] {
-    var result = [Int]()
-    for number in range.lowerBound ... range.upperBound {
+    return range.filter {
+        checkNumber($0)
+    }
+    
+    func checkNumber(_ number: Int) -> Bool {
         let numberString = String(number)
         
-        if numberString.count % 2 > 0 {
-            continue
+        guard numberString.count % 2 == 0 else {
+            return false
         }
         
         let subsequence = numberString.dropLast(numberString.count / 2)
         
-        if numberString.replacingOccurrences(of: subsequence, with: "aa") == "aaaa" {
-            result.append(number)
-        }
+        return numberString.replacingOccurrences(of: subsequence, with: "aa") == "aaaa"
     }
-    return result
 }
 
 // MARK: Part 2

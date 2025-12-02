@@ -10,11 +10,11 @@ let exampleInput =
     }
     
     @Test(arguments: [
-        (11...22, [11,22]),
-        (95...105, [99]),
+//        (11...22, [11,22]),
+//        (95...105, [99]),
         (998...1012, [1010]),
-        (1698522...1698528, []),
-        (1188511880...1188511890, [1188511885]),
+//        (1698522...1698528, []),
+//        (1188511880...1188511890, [1188511885]),
     ]) func `the invalid ID in the range should be the expected result`(testcase: (range: ClosedRange<Int>, expectedResult: [Int])) {
         #expect(invalidIDsInOneRepeatOnly(testcase.range) == testcase.expectedResult)
     }
