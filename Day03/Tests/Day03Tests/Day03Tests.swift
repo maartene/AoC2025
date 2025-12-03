@@ -27,4 +27,8 @@ let exampleInput =
     ]) func `the maximum joltage from bank 1 should be 98`(testcase: (bank: String, expected: Int)) {
         #expect(maximumJoltageFromBank(stringToIntArray(testcase.bank)) == testcase.expected)
     }
+    
+    @Test func `the maximum joltage from the actual input should be 17330`() {
+        #expect(maximumJoltageFrom(input) == 17330)
+    }
 }
