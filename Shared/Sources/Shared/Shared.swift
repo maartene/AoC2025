@@ -20,6 +20,15 @@ public func convertInputToMatrixOfCharacters(_ input: String) -> [[Character]] {
     return characters
 }
 
+public func stringToIntArray(_ string: any StringProtocol) -> [Int] {
+    let stringArray = string.map { $0 }
+        .map {
+            String($0)
+        }
+    return stringArray.compactMap { Int($0) }
+}
+
+
 public func memoize<In: Hashable, Out>(_ f: @escaping (In) -> Out) -> (In) -> Out {
     var memo: [In: Out] = [:]
     return {
@@ -102,4 +111,16 @@ public func BFS(start: Vector, destination: Vector, map: [[Character]]) -> Int? 
     }
 
     return nil
+}
+
+public func pow(_ base: Int, _ exponent: Int) -> Int {
+    guard exponent >= 0 else {
+        return 0
+    }
+    
+    var result = 1
+    for _ in 0 ..< exponent {
+        result *= base
+    }
+    return result
 }

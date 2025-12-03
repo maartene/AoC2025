@@ -1,4 +1,5 @@
 import Testing
+import Shared
 @testable import Day03
 
 let exampleInput =

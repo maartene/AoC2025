@@ -12,24 +12,9 @@ func maximumJoltageFrom(_ input: String, maxDigits: Int = 2) -> Int {
     return maximumPerBank.reduce(0, +)
 }
 
-struct JoltageInput: Hashable {
-    let bank: [Int]
-    let currentMaximum: Int
-    let startIndex: Int
-    let maxDigits: Int
-    let digitsCount: Int
-}
-
 func maximumJoltageForBank(_ bank: [Int], maxDigits: Int) -> Int {
     var cache: [String: Int] = [:]
-
     return cachedMaximumJoltageFor(bank: bank, digits: maxDigits, cache: &cache)
-}
-
-extension Array where Element == Int {
-    func toInt() -> Int {
-        reduce(0) { $0 * 10 + $1 }
-    }
 }
 
 func cachedMaximumJoltageFor(bank: [Int], digits: Int, cache: inout [String: Int]) -> Int {
@@ -54,22 +39,8 @@ func cachedMaximumJoltageFor(bank: [Int], digits: Int, cache: inout [String: Int
     return result
 }
 
-func stringToIntArray(_ string: any StringProtocol) -> [Int] {
-    let stringArray = string.map { $0 }
-        .map {
-            String($0)
-        }
-    return stringArray.compactMap { Int($0) }
-}
-
-func pow(_ base: Int, _ exponent: Int) -> Int {
-    guard exponent >= 0 else {
-        return 0
+extension Array where Element == Int {
+    func toInt() -> Int {
+        reduce(0) { $0 * 10 + $1 }
     }
-    
-    var result = 1
-    for _ in 0 ..< exponent {
-        result *= base
-    }
-    return result
 }
