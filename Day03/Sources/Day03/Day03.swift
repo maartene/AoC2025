@@ -1,20 +1,44 @@
 import Shared
 
 func maximumJoltageFrom(_ input: String) -> Int {
-    let bank1 = stringToIntArray("987654321111111")
+    let banks = input.split(separator: "\n")
+        .map { stringToIntArray($0) }
     
-    let maximumPerBank = [
-        maximumJoltageFromBank(bank1),
-        89,
-        78,
-        92
-    ]
+    let maximumPerBank = banks.map {
+        maximumJoltageFromBank($0)
+    }
     
     return maximumPerBank.reduce(0, +)
 }
 
 func maximumJoltageFromBank(_ bank: [Int]) -> Int {
-    98
+    let bank1 = bank
+    
+    var largestBatteryIndex = 0
+    for i in 0 ..< bank.count {
+        if bank[i] > bank[largestBatteryIndex] {
+            largestBatteryIndex = i
+        }
+    }
+    
+    var bank2 = bank1
+    bank2.remove(at: largestBatteryIndex)
+    
+    var secondLargestBatteryIndex = 0
+    for i in 0 ..< bank2.count {
+        if bank2[i] > bank2[secondLargestBatteryIndex] {
+            secondLargestBatteryIndex = i
+        }
+    }
+    
+    let batteryJoltageString: String
+    if largestBatteryIndex > secondLargestBatteryIndex {
+        batteryJoltageString = "\(bank2[secondLargestBatteryIndex])\(bank1[largestBatteryIndex])"
+    } else {
+        batteryJoltageString = "\(bank1[largestBatteryIndex])\(bank2[secondLargestBatteryIndex])"
+    }
+    
+    return Int(batteryJoltageString)!
 }
 
 func stringToIntArray(_ string: any StringProtocol) -> [Int] {
