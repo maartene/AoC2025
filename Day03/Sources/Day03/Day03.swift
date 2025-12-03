@@ -16,8 +16,7 @@ func maximumJoltageFromBank(_ bank: [Int]) -> Int {
     
     for leftIndex in 0 ..< bank.count - 1 {
         for rightIndex in leftIndex + 1 ..< bank.count {
-            let batteryJoltageString = "\(bank[leftIndex])\(bank[rightIndex])"
-            let batteryJoltage = Int(batteryJoltageString)!
+            let batteryJoltage = bank[leftIndex] * 10 + bank[rightIndex]
             
             if batteryJoltage > maximum {
                 maximum = batteryJoltage
