@@ -6,7 +6,7 @@ func maximumJoltageFrom(_ input: String, maxDigits: Int = 2) -> Int {
         .map { stringToIntArray($0) }
     
     let maximumPerBank = banks.map {
-        cachedmaximumJoltageFromBank($0, maxDigits: maxDigits)
+        maximumJoltageForBank($0, maxDigits: maxDigits)
     }
     
     return maximumPerBank.reduce(0, +)
@@ -20,10 +20,10 @@ struct JoltageInput: Hashable {
     let digitsCount: Int
 }
 
-func cachedmaximumJoltageFromBank(_ bank: [Int], maxDigits: Int) -> Int {
+func maximumJoltageForBank(_ bank: [Int], maxDigits: Int) -> Int {
     var cache: [String: Int] = [:]
 
-    return part2(bank: bank, digits: maxDigits, cache: &cache)
+    return cachedMaximumJoltageFor(bank: bank, digits: maxDigits, cache: &cache)
 }
 
 extension Array where Element == Int {
@@ -32,7 +32,7 @@ extension Array where Element == Int {
     }
 }
 
-func part2(bank: [Int], digits: Int, cache: inout [String: Int]) -> Int {
+func cachedMaximumJoltageFor(bank: [Int], digits: Int, cache: inout [String: Int]) -> Int {
     if let result = cache["\(bank)-\(digits)"] {
         return result
     }
@@ -45,15 +45,10 @@ func part2(bank: [Int], digits: Int, cache: inout [String: Int]) -> Int {
         return bank.toInt()
     }
     
-//        # Take this digit
-//        # For the 12th digit, we need 10 ^ (12 - 1)
-    let a = bank[0] * pow(10, digits - 1) + part2(bank: Array(bank.dropFirst()), digits: digits - 1, cache: &cache)
+    let a = bank[0] * pow(10, digits - 1) + cachedMaximumJoltageFor(bank: Array(bank.dropFirst()), digits: digits - 1, cache: &cache)
         
-    let b = part2(bank: Array(bank.dropFirst()), digits: digits, cache: &cache)
+    let b = cachedMaximumJoltageFor(bank: Array(bank.dropFirst()), digits: digits, cache: &cache)
     
-        
-    
-    // Return the greater value
     let result = max(a, b)
     cache["\(bank)-\(digits)"] = result
     return result

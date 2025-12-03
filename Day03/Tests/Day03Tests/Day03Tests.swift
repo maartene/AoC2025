@@ -21,7 +21,7 @@ let exampleInput =
         ("234234234234278", 78),
         ("818181911112111", 92),
     ]) func `the maximum joltage from banks for two digits`(testcase: (bank: String, expected: Int)) {
-        #expect(cachedmaximumJoltageFromBank( stringToIntArray(testcase.bank), maxDigits: 2) == testcase.expected)
+        #expect(maximumJoltageForBank( stringToIntArray(testcase.bank), maxDigits: 2) == testcase.expected)
     }
     
     @Test func `the maximum joltage from the actual input should be 17330`() {
@@ -36,7 +36,7 @@ let exampleInput =
         ("234234234234278", 434234234278),
         ("818181911112111", 888911112111),
     ]) func `the maximum joltage from banks from 12 digits`(testcase: (bank: String, expected: Int)) {
-        #expect(cachedmaximumJoltageFromBank(stringToIntArray(testcase.bank), maxDigits: 12) == testcase.expected)
+        #expect(maximumJoltageForBank(stringToIntArray(testcase.bank), maxDigits: 12) == testcase.expected)
     }
     
     @Test func `the maximum joltage from the example input should be 3121910778619`() {
@@ -46,7 +46,7 @@ let exampleInput =
     @Test(arguments: [
         ("2343453422641331233623444434443422422234243434644344344333436434324443344243444547343426444313413747", 764443413747),
     ]) func `the maximum joltage from a large bank`(testcase: (bank: String, expected: Int)) {
-        #expect(cachedmaximumJoltageFromBank( stringToIntArray(testcase.bank), maxDigits: 12) == testcase.expected)
+        #expect(maximumJoltageForBank( stringToIntArray(testcase.bank), maxDigits: 12) == testcase.expected)
     }
     
     @Test func `the maximum joltage from the actual input should be 171518260283767`() {
