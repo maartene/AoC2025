@@ -13,12 +13,17 @@ func maximumJoltageFrom(_ input: String, maxDigits: Int = 2) -> Int {
 }
 
 func maximumJoltageForBank(_ bank: [Int], maxDigits: Int) -> Int {
-    var cache: [String: Int] = [:]
+    var cache: [Input: Int] = [:]
     return cachedMaximumJoltageFor(bank: bank, digits: maxDigits, cache: &cache)
 }
 
-func cachedMaximumJoltageFor(bank: [Int], digits: Int, cache: inout [String: Int]) -> Int {
-    if let result = cache["\(bank)-\(digits)"] {
+struct Input: Hashable {
+    let bank: [Int]
+    let digits: Int
+}
+
+func cachedMaximumJoltageFor(bank: [Int], digits: Int, cache: inout [Input: Int]) -> Int {
+    if let result = cache[Input(bank: bank, digits: digits)] {
         return result
     }
     
@@ -35,7 +40,7 @@ func cachedMaximumJoltageFor(bank: [Int], digits: Int, cache: inout [String: Int
     let b = cachedMaximumJoltageFor(bank: Array(bank.dropFirst()), digits: digits, cache: &cache)
     
     let result = max(a, b)
-    cache["\(bank)-\(digits)"] = result
+    cache[Input(bank: bank, digits: digits)] = result
     return result
 }
 
