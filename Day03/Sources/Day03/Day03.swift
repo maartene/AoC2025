@@ -12,33 +12,19 @@ func maximumJoltageFrom(_ input: String) -> Int {
 }
 
 func maximumJoltageFromBank(_ bank: [Int]) -> Int {
-    let bank1 = bank
+    var maximum = 0
     
-    var largestBatteryIndex = 0
-    for i in 0 ..< bank.count {
-        if bank[i] > bank[largestBatteryIndex] {
-            largestBatteryIndex = i
+    for leftIndex in 0 ..< bank.count - 1 {
+        for rightIndex in leftIndex + 1 ..< bank.count {
+            let batteryJoltageString = "\(bank[leftIndex])\(bank[rightIndex])"
+            let batteryJoltage = Int(batteryJoltageString)!
+            
+            if batteryJoltage > maximum {
+                maximum = batteryJoltage
+            }
         }
     }
-    
-    var bank2 = bank1
-    bank2.remove(at: largestBatteryIndex)
-    
-    var secondLargestBatteryIndex = 0
-    for i in 0 ..< bank2.count {
-        if bank2[i] > bank2[secondLargestBatteryIndex] {
-            secondLargestBatteryIndex = i
-        }
-    }
-    
-    let batteryJoltageString: String
-    if largestBatteryIndex > secondLargestBatteryIndex {
-        batteryJoltageString = "\(bank2[secondLargestBatteryIndex])\(bank1[largestBatteryIndex])"
-    } else {
-        batteryJoltageString = "\(bank1[largestBatteryIndex])\(bank2[secondLargestBatteryIndex])"
-    }
-    
-    return Int(batteryJoltageString)!
+    return maximum
 }
 
 func stringToIntArray(_ string: any StringProtocol) -> [Int] {
