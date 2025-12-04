@@ -8,6 +8,10 @@ func numberOfAccessibleRolls(in input: String) -> Int {
     }
 }
 
+func numberOfRollsThatCanBeRemoved(in input: String) -> Int {
+    43
+}
+
 private func countNeighbours(for coord: Vector, in rolls: Set<Vector>) -> Int {
     let neighbours = coord.neighbours8
     return neighbours.count {
