@@ -3,17 +3,16 @@ import Shared
 func numberOfAccessibleRolls(in input: String) -> Int {
     let rolls = getRollsFromInput(input)
     
-    var count = 0
-    for roll in rolls {
-        let neighbours = roll.neighbours8
-        let neighbourCount = neighbours.count(where: { rolls.contains($0) })
-        
-        if neighbourCount < 4 {
-            count += 1
-        }
+    return rolls.count { roll in
+        countNeighbours(for: roll, in: rolls) < 4
     }
-    
-    return count
+}
+
+private func countNeighbours(for coord: Vector, in rolls: Set<Vector>) -> Int {
+    let neighbours = coord.neighbours8
+    return neighbours.count {
+        rolls.contains($0)
+    }
 }
 
 private func getRollsFromInput(_ input: String) -> Set<Vector> {
