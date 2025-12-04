@@ -1,5 +1,12 @@
 import Shared
 
+@main struct Day04 {
+    static func main() {
+        let result = numberOfRollsThatCanBeRemoved(in: input)
+        print(result)
+    }
+}
+
 func numberOfAccessibleRolls(in input: String) -> Int {
     let rolls = getRollsFromInput(input)
     
@@ -10,12 +17,15 @@ func numberOfAccessibleRolls(in input: String) -> Int {
 
 func numberOfRollsThatCanBeRemoved(in input: String) -> Int {
     var rolls = getRollsFromInput(input)
+    print(rolls.count)
+    
     
     var removedRolls = 0
     
     while let rollToRemove = rollThatCanBeRemoved(in: rolls) {
         rolls.remove(rollToRemove)
         removedRolls += 1
+        print(removedRolls)
     }
     
     return removedRolls
