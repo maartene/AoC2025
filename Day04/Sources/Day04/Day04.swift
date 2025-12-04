@@ -3,7 +3,7 @@ import Shared
 @main struct Day04 {
     static func main() {
         let result = numberOfRollsThatCanBeRemoved(in: input)
-        print(result)
+        print("[PART 2]: Number of rolls that can be removed: \(result)")
     }
 }
 
