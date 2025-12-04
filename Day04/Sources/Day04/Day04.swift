@@ -1,15 +1,7 @@
 import Shared
 
 func numberOfAccessibleRolls(in input: String) -> Int {
-    var rolls = Set<Vector>()
-    let matrix = convertInputToMatrixOfCharacters(input)
-    for row in 0 ..< matrix.count {
-        for column in 0 ..< matrix[row].count {
-            if matrix[row][column] == "@" {
-                rolls.insert(Vector(x: column, y: row))
-            }
-        }
-    }
+    let rolls = getRollsFromInput(input)
     
     var count = 0
     for roll in rolls {
@@ -24,23 +16,15 @@ func numberOfAccessibleRolls(in input: String) -> Int {
     return count
 }
 
-extension Vector {
-    static var neighbours8: [Vector] {
-        [
-            Vector(x: 0, y: 1),
-            Vector(x: 1, y: 0),
-            Vector(x: -1, y: 0),
-            Vector(x: 0, y: -1),
-            Vector(x: 1, y: 1),
-            Vector(x: -1, y: -1),
-            Vector(x: -1, y: 1),
-            Vector(x: 1, y: -1),
-        ]
-    }
-    
-    var neighbours8: [Vector] {
-        Vector.neighbours8.map {
-            $0 + self
+private func getRollsFromInput(_ input: String) -> Set<Vector> {
+    var rolls = Set<Vector>()
+    let matrix = convertInputToMatrixOfCharacters(input)
+    for row in 0 ..< matrix.count {
+        for column in 0 ..< matrix[row].count {
+            if matrix[row][column] == "@" {
+                rolls.insert(Vector(x: column, y: row))
+            }
         }
     }
+    return rolls
 }

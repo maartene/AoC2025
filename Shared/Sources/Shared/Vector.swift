@@ -98,3 +98,24 @@ extension Vector {
 }
 
 extension Vector: Sendable { }
+
+extension Vector {
+    public static var neighbours8: [Vector] {
+        [
+            Vector(x: 0, y: 1),
+            Vector(x: 1, y: 0),
+            Vector(x: -1, y: 0),
+            Vector(x: 0, y: -1),
+            Vector(x: 1, y: 1),
+            Vector(x: -1, y: -1),
+            Vector(x: -1, y: 1),
+            Vector(x: 1, y: -1),
+        ]
+    }
+    
+    public var neighbours8: [Vector] {
+        Vector.neighbours8.map {
+            $0 + self
+        }
+    }
+}
