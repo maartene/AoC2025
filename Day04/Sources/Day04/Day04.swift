@@ -17,21 +17,18 @@ func numberOfAccessibleRolls(in input: String) -> Int {
 
 func numberOfRollsThatCanBeRemoved(in input: String) -> Int {
     var rolls = getRollsFromInput(input)
-    print(rolls.count)
-    
     
     var removedRolls = 0
     
-    while let rollToRemove = rollThatCanBeRemoved(in: rolls) {
+    while let rollToRemove = firstRollThatCanBeRemoved(in: rolls) {
         rolls.remove(rollToRemove)
         removedRolls += 1
-        print(removedRolls)
     }
     
     return removedRolls
 }
 
-private func rollThatCanBeRemoved(in rolls: Set<Vector>) -> Vector? {
+private func firstRollThatCanBeRemoved(in rolls: Set<Vector>) -> Vector? {
     rolls.first {
         countNeighbours(for: $0, in: rolls) < 4
     }
