@@ -27,6 +27,6 @@ let exampleInput =
 
 @Suite struct `to get the second star on day 04` {
     @Test func `the total number of rolls of paper that can be removed should be 43`() {
-        #expect(numberOfRollsThatCanBeRemoved(in: input) == 43)
+        #expect(numberOfRollsThatCanBeRemoved(in: exampleInput) == 43)
     }
 }

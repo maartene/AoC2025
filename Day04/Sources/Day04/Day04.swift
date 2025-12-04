@@ -9,23 +9,9 @@ func numberOfAccessibleRolls(in input: String) -> Int {
 }
 
 func numberOfRollsThatCanBeRemoved(in input: String) -> Int {
-    let lastStep =
-    """
-    ..........
-    ..........
-    ....x.....
-    ...@@@....
-    ...@@@@...
-    ...@@@@@..
-    ...@.@.@@.
-    ...@@.@@@.
-    ...@@@@@..
-    ....@@@...
-    """
+    var rolls = getRollsFromInput(input)
     
-    var rolls = getRollsFromInput(lastStep)
-    
-    var removedRolls = 42
+    var removedRolls = 0
     
     while let rollToRemove = rollThatCanBeRemoved(in: rolls) {
         rolls.remove(rollToRemove)
