@@ -40,7 +40,7 @@ let exampleInput =
         (1...5, 3...7, Set([1...7])),
         (3...7, 1...5, Set([1...7])),
     ]) func `combining ranges should provide the correct result`(testcase: (range1: ClosedRange<Int>, range2: ClosedRange<Int>, expectedRanges: Set<ClosedRange<Int>>)) {
-        #expect(combineRanges(range1: testcase.range1, range2: testcase.range2) == testcase.expectedRanges)
+        #expect(combineRanges(range1: testcase.range1, range2: testcase.range2).newRange == testcase.expectedRanges)
     }
     
     @Test func `combining multiple ranges`() {
