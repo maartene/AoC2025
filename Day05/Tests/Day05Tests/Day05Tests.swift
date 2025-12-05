@@ -52,8 +52,8 @@ let exampleInput =
         (10...14, 3...5, Set([])), // ranges are disjunct
         (1...6, 3...5, Set([3...5])), // range 1 contains range 2
         (3...5, 1...6, Set([3...5])), // range 2 contains range 1
-        (3...4, 3...5, Set([3...5])), // range grows to upperbound of range 2
-        (3...5, 3...4, Set([3...5])), // range grows to upperbound of range 1
+        (3...4, 3...5, Set([3...4])), // range grows to upperbound of range 2
+        (3...5, 3...4, Set([3...4])), // range grows to upperbound of range 1
         (2...5, 1...5, Set([2...5])), // range grows to lowerbound of range 2
         (1...5, 2...5, Set([2...5])), // range grows to lowerbound of range 1
         (1...5, 2...7, Set([1...5, 2...7])), // range grows to lowerbound of range 1, upper of range 2
