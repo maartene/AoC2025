@@ -13,7 +13,12 @@ func numberOfFreshIngredients(in input: String) -> Int {
 }
 
 func numberOfFreshIngredientIDs(in input: String) -> Int {
-    14
+    let ranges = getRangesAndIngredientsFrom(input).ranges
+    let combinedRanges = combineRanges(Set(ranges))
+    
+    let rangeCounts = combinedRanges.map { $0.count }
+    
+    return rangeCounts.reduce(0, +)
 }
 
 func combineRanges(range1: ClosedRange<Int>, range2: ClosedRange<Int>) -> (newRange: Set<ClosedRange<Int>>, rangesToRemove: Set<ClosedRange<Int>>) {
