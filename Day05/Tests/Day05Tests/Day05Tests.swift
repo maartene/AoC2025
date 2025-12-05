@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import Day05
 
@@ -29,5 +30,13 @@ let exampleInput =
 @Suite struct `to get the second star on day 05` {
     @Test func `the number of fresh ingredient IDs in the example input should be 14`() {
         #expect(numberOfFreshIngredientIDs(in: exampleInput) == 14)
+    }
+    
+    @Test(arguments: [
+        (3...5, 10...14, Set([3...5, 10...14])),
+        (1...6, 3...5, Set([1...6])),
+        (1...5, 3...7, Set([1...7])),
+    ]) func `combining ranges should provide the correct result`(testcase: (range1: ClosedRange<Int>, range2: ClosedRange<Int>, expectedRanges: Set<ClosedRange<Int>>)) {
+        #expect(combineRanges(range1: testcase.range1, range2: testcase.range2) == testcase.expectedRanges)
     }
 }

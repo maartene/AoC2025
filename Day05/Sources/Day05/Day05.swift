@@ -17,6 +17,24 @@ func numberOfFreshIngredientIDs(in input: String) -> Int {
     14
 }
 
+func combineRanges(range1: ClosedRange<Int>, range2: ClosedRange<Int>) -> Set<ClosedRange<Int>> {
+    
+    if range2.contains(range1.upperBound) && range2.contains(range1.lowerBound) {
+        return [range2]
+    }
+    
+    if range1.contains(range2.upperBound) && range1.contains(range2.lowerBound) {
+        return [range1]
+    }
+    
+    if range1.contains(range2.lowerBound) &&
+        range1.contains(range2.upperBound) == false {
+        return [range1.lowerBound...range2.upperBound]
+    }
+    
+    return [range1, range2]
+}
+
 private func getRangesAndIngredientsFrom(_ input: String) -> (ranges: [ClosedRange<Int>], ingredients: [Int]) {
     let lines = input.split(separator: "\n")
     
