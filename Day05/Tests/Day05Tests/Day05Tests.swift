@@ -25,3 +25,9 @@ let exampleInput =
         #expect(numberOfFreshIngredients(in: input) == 617)
     }
 }
+
+@Suite struct `to get the second star on day 05` {
+    @Test func `the number of fresh ingredient IDs in the example input should be 14`() {
+        #expect(numberOfFreshIngredientIDs(in: exampleInput) == 14)
+    }
+}

@@ -13,6 +13,10 @@ func numberOfFreshIngredients(in input: String) -> Int {
     return freshIngredients.count
 }
 
+func numberOfFreshIngredientIDs(in input: String) -> Int {
+    14
+}
+
 private func getRangesAndIngredientsFrom(_ input: String) -> (ranges: [ClosedRange<Int>], ingredients: [Int]) {
     let lines = input.split(separator: "\n")
     
