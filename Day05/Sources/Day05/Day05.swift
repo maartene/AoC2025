@@ -1,5 +1,3 @@
-import Algorithms
-
 func numberOfFreshIngredients(in input: String) -> Int {
     let parsedInput = getRangesAndIngredientsFrom(input)
     let ingredients = parsedInput.ingredients
