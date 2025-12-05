@@ -49,6 +49,7 @@ func combineRanges(_ ranges: Set<ClosedRange<Int>>) -> Set<ClosedRange<Int>> {
     var ranges = ranges
     
     while canCombine {
+        print(ranges.count)
         canCombine = false
         
         for combination in ranges.combinations(ofCount: 2) {
