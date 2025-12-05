@@ -32,7 +32,16 @@ func combineRanges(range1: ClosedRange<Int>, range2: ClosedRange<Int>) -> Set<Cl
         return [range1.lowerBound...range2.upperBound]
     }
     
+    if range2.contains(range1.lowerBound) &&
+        range2.contains(range1.upperBound) == false {
+        return [range2.lowerBound...range1.upperBound]
+    }
+    
     return [range1, range2]
+}
+
+func combineRanges(_ ranges: Set<ClosedRange<Int>>) -> Set<ClosedRange<Int>> {
+    [3...5, 10...20]
 }
 
 private func getRangesAndIngredientsFrom(_ input: String) -> (ranges: [ClosedRange<Int>], ingredients: [Int]) {

@@ -34,9 +34,27 @@ let exampleInput =
     
     @Test(arguments: [
         (3...5, 10...14, Set([3...5, 10...14])),
+        (10...14, 3...5, Set([3...5, 10...14])),
         (1...6, 3...5, Set([1...6])),
+        (3...5, 1...6, Set([1...6])),
         (1...5, 3...7, Set([1...7])),
+        (3...7, 1...5, Set([1...7])),
     ]) func `combining ranges should provide the correct result`(testcase: (range1: ClosedRange<Int>, range2: ClosedRange<Int>, expectedRanges: Set<ClosedRange<Int>>)) {
         #expect(combineRanges(range1: testcase.range1, range2: testcase.range2) == testcase.expectedRanges)
+    }
+    
+    @Test func `combining multiple ranges`() {
+        let ranges:Set = [
+            3...5,
+            10...14,
+            16...20,
+            12...18,
+        ]
+        
+        let expectedRanges: Set = [
+            3...5, 10...20
+        ]
+        
+        #expect(combineRanges(ranges) == expectedRanges)
     }
 }
