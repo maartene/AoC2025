@@ -3,7 +3,6 @@ import Shared
 func sumOfMathProblems(in input: String) -> Int {
     Matrix<String>.makeStringMatrix(from: input)
         .transposed()
-        .rows
         .map {
             calculateProblem($0)
         }

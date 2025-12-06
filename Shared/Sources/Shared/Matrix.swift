@@ -63,8 +63,26 @@ extension Matrix: Equatable where T: Equatable {
         
         return lhs.cells == rhs.cells
     }
+}
+
+extension Matrix {
+    public func map<S>(_ transform: (T) -> S) -> Matrix<S> {
+        let newCells = cells.map { row in
+            row.map { cell in
+                transform(cell)
+            }
+        }
+        
+        return Matrix<S>(newCells)
+    }
     
-    
+    public func map<S>(_ transform: ([T]) -> S) -> [S] {
+        let newRows = cells.map { row in
+            transform(row)
+        }
+        
+        return newRows
+    }
 }
 
 extension Matrix {
