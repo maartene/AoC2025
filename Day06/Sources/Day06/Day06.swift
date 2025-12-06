@@ -66,6 +66,5 @@ func stringToColumns(_ input: String) -> [[String]] {
         result.append(column)
     }
     
-    print(result)
     return result
 }
