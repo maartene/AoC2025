@@ -1,5 +1,4 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+import Shared
 
 func sumOfMathProblems(in input: String) -> Int {
     let problems = stringToColumns(input)
@@ -8,12 +7,15 @@ func sumOfMathProblems(in input: String) -> Int {
         calculateProblem($0)
     }
     
-//    let answersToProblems = [
-//        calculateProblem(["123", "45", "6", "*"]),
-//        calculateProblem(["328", "64", "98", "+"]),
-//        calculateProblem(["51", "387", "215", "*"]),
-//        calculateProblem(["64", "23", "314", "+"])
-//    ]
+    return answersToProblems.reduce(0, +)
+}
+
+func sumOfMathProblemsRightToLeft(in input: String) -> Int {
+    let problems = readProblemsRightToLeft(input)
+    
+    let answersToProblems = problems.map {
+        calculateProblem($0)
+    }
     
     return answersToProblems.reduce(0, +)
 }
@@ -26,7 +28,7 @@ func calculateProblem(_ input: [String]) -> Int {
     }
     
     var result = operation == "*" ? 1 : 0
-    for numberString in input {
+    for numberString in input where numberString != "" {
         let number = Int(numberString)!
         
         if operation == "+" {
@@ -67,4 +69,39 @@ func stringToColumns(_ input: String) -> [[String]] {
     }
     
     return result
+}
+
+func readProblemsRightToLeft(_ input: String) -> [[String]] {
+    let matrix = convertInputToMatrixOfCharacters(input)
+    
+    var problems = [[String]]()
+    var problem = [String]()
+    for columnIndexReversed in 0..<matrix[0].count {
+        let columnIndex = matrix[0].count - 1 - columnIndexReversed
+        var column = ""
+        for rowIndex in 0..<matrix.count {
+            let character = String(matrix[rowIndex][columnIndex])
+            switch character {
+            case " ":
+                problem.append(column)
+                column = ""
+            case "*":
+                problem.append(column)
+                column = ""
+                problem.append(character)
+                problems.append(problem)
+                problem = []
+            case "+":
+                problem.append(column)
+                column = ""
+                problem.append(character)
+                problems.append(problem)
+                problem = []
+            default:
+                column += character
+            }
+        }
+    }
+    
+    return problems
 }
