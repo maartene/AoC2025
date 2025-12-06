@@ -3,10 +3,10 @@
 
 func sumOfMathProblems(in input: String) -> Int {
     let answersToProblems = [
-        calculateProblem(["123", "45","6","*"]),
-        490,
-        4243455,
-        401
+        calculateProblem(["123", "45", "6", "*"]),
+        calculateProblem(["328", "64", "98", "+"]),
+        calculateProblem(["51", "387", "215", "*"]),
+        calculateProblem(["64", "23", "314", "+"])
     ]
     
     return answersToProblems.reduce(0, +)
