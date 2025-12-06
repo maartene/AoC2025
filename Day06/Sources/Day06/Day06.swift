@@ -18,42 +18,33 @@ func sumOfMathProblemsRightToLeft(in input: String) -> Int {
 }
 
 struct Problem {
-    enum Operation: Character {
-        case plus = "+"
-        case times = "*"
-        
-        var baseValue: Int {
-            switch self {
-            case .plus: return 0
-            case.times: return 1
-            }
-        }
-        
-        var function: (Int, Int) -> Int {
-            switch self {
-            case .plus: return (+)
-            case.times: return (*)
-            }
-        }
+    struct Operation: Sendable {
+        let baseValue: Int
+        let function: @Sendable (Int, Int) -> Int
     }
     
-    let numbers: [Int]
-    let operation: Operation
+    private let numbers: [Int]
+    private let operation: Operation
     
     var value: Int {
         numbers.reduce(operation.baseValue, operation.function)
     }
     
+    private static let operations = [
+        "*": Operation(baseValue: 1, function: *),
+        "+": Operation(baseValue: 0, function: +)
+    ]
+    
     init(_ strings: [String]) {
         var numbers = [Int]()
-        var currentOperation: Operation = .plus
+        var currentOperation = Operation(baseValue: 0, function: +)
         
         for string in strings {
             if string == "" {
                 // do nothing
             } else if let number = Int(string) {
                 numbers.append(number)
-            } else if let operation = Operation(rawValue: Character(string)) {
+            } else if let operation = Problem.operations[string] {
                 currentOperation = operation
             }
         }
@@ -77,13 +68,7 @@ func readProblemsRightToLeft(_ input: String) -> [Problem] {
             case " ":
                 problem.append(column)
                 column = ""
-            case "*":
-                problem.append(column)
-                column = ""
-                problem.append(character)
-                problems.append(Problem(problem))
-                problem = []
-            case "+":
+            case "*", "+":
                 problem.append(column)
                 column = ""
                 problem.append(character)
