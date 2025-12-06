@@ -13,5 +13,22 @@ func sumOfMathProblems(in input: String) -> Int {
 }
 
 func calculateProblem(_ input: [String]) -> Int {
-    33210
+    var input = input
+    
+    guard let operation = input.popLast(), ["*", "+"].contains(operation) else {
+        fatalError("Received unexpected operation: \(input[input.count - 1])")
+    }
+    
+    var result = operation == "*" ? 1 : 0
+    for numberString in input {
+        let number = Int(numberString)!
+        
+        if operation == "+" {
+            result += number
+        } else {
+            result *= number
+        }
+    }
+    
+    return result
 }
