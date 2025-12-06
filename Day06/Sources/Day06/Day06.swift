@@ -1,23 +1,21 @@
 import Shared
 
 func sumOfMathProblems(in input: String) -> Int {
-    let problems = stringToColumns(input)
-    
-    let answersToProblems = problems.map {
-        calculateProblem($0)
-    }
-    
-    return answersToProblems.reduce(0, +)
+    Matrix<String>.makeStringMatrix(from: input)
+        .transposed()
+        .rows
+        .map {
+            calculateProblem($0)
+        }
+        .reduce(0, +)
 }
 
 func sumOfMathProblemsRightToLeft(in input: String) -> Int {
-    let problems = readProblemsRightToLeft(input)
-    
-    let answersToProblems = problems.map {
-        calculateProblem($0)
-    }
-    
-    return answersToProblems.reduce(0, +)
+    readProblemsRightToLeft(input)
+        .map {
+            calculateProblem($0)
+        }
+        .reduce(0, +)
 }
 
 func calculateProblem(_ input: [String]) -> Int {
@@ -41,45 +39,15 @@ func calculateProblem(_ input: [String]) -> Int {
     return result
 }
 
-func stringToStringMatrix(_ input: String) -> [[String]] {
-    let lines = input.split(separator: "\n")
-    
-    var result = [[String]]()
-    
-    for line in lines {
-        let row = line.split(separator: " ")
-            .map { String($0) }
-        result.append(row)
-    }
-    
-    return result
-}
-
-func stringToColumns(_ input: String) -> [[String]] {
-    let stringMatrix = stringToStringMatrix(input)
-    
-    var result = [[String]]()
-    
-    for columnIndex in 0..<stringMatrix[0].count {
-        var column: [String] = []
-        for row in stringMatrix {
-            column.append(row[columnIndex])
-        }
-        result.append(column)
-    }
-    
-    return result
-}
-
 func readProblemsRightToLeft(_ input: String) -> [[String]] {
-    let matrix = convertInputToMatrixOfCharacters(input)
+    let matrix = Matrix<Character>.makeCharacterMatrix(from: input)
     
     var problems = [[String]]()
     var problem = [String]()
-    for columnIndexReversed in 0..<matrix[0].count {
-        let columnIndex = matrix[0].count - 1 - columnIndexReversed
+    for columnIndexReversed in 0..<matrix.width {
+        let columnIndex = matrix.width - 1 - columnIndexReversed
         var column = ""
-        for rowIndex in 0..<matrix.count {
+        for rowIndex in 0..<matrix.height {
             let character = String(matrix[rowIndex][columnIndex])
             switch character {
             case " ":

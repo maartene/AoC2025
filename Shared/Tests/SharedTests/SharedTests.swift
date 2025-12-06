@@ -1,6 +1,19 @@
 import Testing
 @testable import Shared
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+@Suite struct `Matrix should` {
+    @Test func `when transposed return the transposed matrix`() {
+        let matrix = Matrix([
+            [1, 2, 3],
+            [4, 5, 6],
+        ])
+        
+        let expectedTransposedMatrix = Matrix([
+            [1, 4],
+            [2, 5],
+            [3, 6]
+        ])
+        
+        #expect(matrix.transposed() == expectedTransposedMatrix)
+    }
 }
