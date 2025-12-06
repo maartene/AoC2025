@@ -28,7 +28,7 @@ func calculateProblem(_ input: [String]) -> Int {
     }
     
     var result = operation == "*" ? 1 : 0
-    for numberString in input where numberString != "" {
+    for numberString in input {
         let number = Int(numberString)!
         
         if operation == "+" {
@@ -104,4 +104,7 @@ func readProblemsRightToLeft(_ input: String) -> [[String]] {
     }
     
     return problems
+        .map { problem in
+            problem.filter { $0 != "" }
+        }
 }
