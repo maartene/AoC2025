@@ -21,19 +21,6 @@ let exampleInput =
         #expect(sumOfMathProblemsRightToLeft(in: exampleInput) == 3263827)
     }
     
-    @Test func `transposing input`() {
-        let expectedProblems = [
-            ["4", "431", "623", "+"],
-            ["175", "581", "32", "*"],
-            ["8", "248", "369", "+"],
-            ["356", "24", "1", "*"]
-        ]
-
-        let problemsRightToLeft = readProblemsRightToLeft(exampleInput)
-        
-        #expect(problemsRightToLeft == expectedProblems)
-    }
-    
     @Test func `the total of all math problem answers summed up for the actual input should be 11386445308378`() {
         #expect(sumOfMathProblemsRightToLeft(in: input) == 11386445308378)
     }

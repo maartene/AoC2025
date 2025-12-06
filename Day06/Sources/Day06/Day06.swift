@@ -4,7 +4,7 @@ func sumOfMathProblems(in input: String) -> Int {
     Matrix<String>.makeStringMatrix(from: input)
         .transposed()
         .map {
-            calculateProblem($0)
+            Problem($0).value
         }
         .reduce(0, +)
 }
@@ -12,36 +12,61 @@ func sumOfMathProblems(in input: String) -> Int {
 func sumOfMathProblemsRightToLeft(in input: String) -> Int {
     readProblemsRightToLeft(input)
         .map {
-            calculateProblem($0)
+            $0.value
         }
         .reduce(0, +)
 }
 
-func calculateProblem(_ input: [String]) -> Int {
-    var input = input
-    
-    guard let operation = input.popLast(), ["*", "+"].contains(operation) else {
-        fatalError("Received unexpected operation: \(input[input.count - 1])")
-    }
-    
-    var result = operation == "*" ? 1 : 0
-    for numberString in input {
-        let number = Int(numberString)!
+struct Problem {
+    enum Operation: Character {
+        case plus = "+"
+        case times = "*"
         
-        if operation == "+" {
-            result += number
-        } else {
-            result *= number
+        var baseValue: Int {
+            switch self {
+            case .plus: return 0
+            case.times: return 1
+            }
+        }
+        
+        var function: (Int, Int) -> Int {
+            switch self {
+            case .plus: return (+)
+            case.times: return (*)
+            }
         }
     }
     
-    return result
+    let numbers: [Int]
+    let operation: Operation
+    
+    var value: Int {
+        numbers.reduce(operation.baseValue, operation.function)
+    }
+    
+    init(_ strings: [String]) {
+        var numbers = [Int]()
+        var currentOperation: Operation = .plus
+        
+        for string in strings {
+            if string == "" {
+                // do nothing
+            } else if let number = Int(string) {
+                numbers.append(number)
+            } else if let operation = Operation(rawValue: Character(string)) {
+                currentOperation = operation
+            }
+        }
+        
+        self.operation = currentOperation
+        self.numbers = numbers
+    }
 }
 
-func readProblemsRightToLeft(_ input: String) -> [[String]] {
+func readProblemsRightToLeft(_ input: String) -> [Problem] {
     let matrix = Matrix<Character>.makeCharacterMatrix(from: input)
     
-    var problems = [[String]]()
+    var problems = [Problem]()
     var problem = [String]()
     for columnIndexReversed in 0..<matrix.width {
         let columnIndex = matrix.width - 1 - columnIndexReversed
@@ -56,13 +81,13 @@ func readProblemsRightToLeft(_ input: String) -> [[String]] {
                 problem.append(column)
                 column = ""
                 problem.append(character)
-                problems.append(problem)
+                problems.append(Problem(problem))
                 problem = []
             case "+":
                 problem.append(column)
                 column = ""
                 problem.append(character)
-                problems.append(problem)
+                problems.append(Problem(problem))
                 problem = []
             default:
                 column += character
@@ -71,7 +96,4 @@ func readProblemsRightToLeft(_ input: String) -> [[String]] {
     }
     
     return problems
-        .map { problem in
-            problem.filter { $0 != "" }
-        }
 }
