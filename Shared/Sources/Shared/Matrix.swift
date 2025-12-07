@@ -8,7 +8,7 @@
 public struct Matrix<T> {
     public let width: Int
     public let height: Int
-    private let cells: [[T]]
+    private var cells: [[T]]
     
     public init(_ cells: [[T]]) {
         self.cells = cells
@@ -53,6 +53,10 @@ public struct Matrix<T> {
     
     public var rows: [[T]] {
         cells
+    }
+    
+    public mutating func changeValue(at coord: Vector, to newValue: T) {
+        cells[coord.y][coord.x] = newValue
     }
 }
 

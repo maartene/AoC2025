@@ -36,7 +36,48 @@ let exampleInput =
         #expect(pathCount(in: exampleInput) == 40)
     }
     
-//    @Test func `the total number of paths in for the actual input should be 1660`() {
-//        #expect(pathCount(in: input) == 1660)
-//    }
+    @Test func `the total number of paths in for be 2`() {
+        let input =
+        """
+        .S.
+        ...
+        .^.
+        ...
+        """
+        #expect(pathCount(in: input) == 2)
+    }
+    
+    @Test func `the total number of paths in for be 4`() {
+        let input =
+        """
+        ..S..
+        .....
+        ..^..
+        .....
+        .^.^.
+        .....
+        """
+        #expect(pathCount(in: input) == 4)
+    }
+    
+    @Test func `the total number of paths in for be 7`() {
+        let input =
+        """
+        ...S..
+        ......
+        ...^..
+        ......
+        ..^...
+        ......
+        .^.^..
+        ......
+        ....^.
+        ......
+        """
+        #expect(pathCount(in: input) == 7)
+    }
+    
+    @Test func `the total number of paths in for the actual input should be 305999729392659`() {
+        #expect(pathCount(in: input) == 305999729392659)
+    }
 }
