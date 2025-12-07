@@ -23,7 +23,7 @@ let exampleInput =
 
 @Suite struct `to get the first star on day 07` {
     @Test func `the total number of splits in for the example input should be 21`() {
-        #expect(splitCount(in: exampleInput) == 21)
+        #expect(pathAndSplitCount(in: exampleInput).splitCount == 21)
     }
     
     @Test func `the total number of splits in for the actual input should be 1660`() {
@@ -74,7 +74,7 @@ let exampleInput =
         ....^.
         ......
         """
-        #expect(pathCount(in: input) == 7)
+        #expect(pathAndSplitCount(in: input).pathCount == 7)
     }
     
     @Test func `the total number of paths in for the actual input should be 305999729392659`() {

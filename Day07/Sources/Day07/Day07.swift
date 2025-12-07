@@ -28,35 +28,66 @@ func splitCount(in input: String) -> Int {
 
 func pathCount(in input: String) -> Int {
     let matrix = Matrix<Character>.makeCharacterMatrix(from: input)
-    var resultMatrix = Matrix(
-        Array(repeating: Array(repeating: 0, count: matrix.width), count: matrix.height)
-    )
-    
     let startPosition = matrix[0].firstIndex { $0 == "S" }!
-    resultMatrix.changeValue(at: Vector(x: startPosition, y: 0), to: 1)
     
-    var beams: Set<Int> = [startPosition]
+    var beams: [Int: Int] = [startPosition: 1]
     
-    for y in 1 ..< matrix.height {
-        var updatedBeams = beams
+    for y in 0 ..< matrix.height {
+        var updatedBeams = beams.reduce(into: [Int:Int]()) { partialResult, beam in
+            partialResult[beam.key] = 0
+        }
+        
         for beam in beams {
-            let beamValue = resultMatrix[beam, y - 1]
-            if matrix[y][beam] == "^" {
-                updatedBeams.remove(beam)
+            let beamValue = beam.value
+            if matrix[y][beam.key] == "^" {
+                updatedBeams.removeValue(forKey: beam.key)
                 
-                addBeamValue(beamValue, at: Vector(x: beam - 1, y: y), to: &resultMatrix)
-                updatedBeams.insert(beam - 1)
-                addBeamValue(beamValue, at: Vector(x: beam + 1, y: y), to: &resultMatrix)
-                updatedBeams.insert(beam + 1)
+                updatedBeams[beam.key - 1, default: 0] += beamValue
+                updatedBeams[beam.key + 1, default: 0] += beamValue
             } else {
-                addBeamValue(beamValue, at: Vector(x: beam, y: y), to: &resultMatrix)
+                updatedBeams[beam.key, default: 0] += beamValue
             }
         }
         beams = updatedBeams
     }
     
-    let lastRow = resultMatrix.rows.last ?? []
-    return lastRow.reduce(0, +)
+    return beams
+        .values
+        .reduce(0, +)
+}
+
+func pathAndSplitCount(in input: String) -> (pathCount: Int, splitCount: Int) {
+    let matrix = Matrix<Character>.makeCharacterMatrix(from: input)
+    let startPosition = matrix[0].firstIndex { $0 == "S" }!
+    
+    var beams: [Int: Int] = [startPosition: 1]
+    var splitCount = 0
+    
+    for y in 0 ..< matrix.height {
+        var updatedBeams = beams.reduce(into: [Int:Int]()) { partialResult, beam in
+            partialResult[beam.key] = 0
+        }
+        
+        for beam in beams {
+            let beamValue = beam.value
+            if matrix[y][beam.key] == "^" {
+                splitCount += 1
+                updatedBeams.removeValue(forKey: beam.key)
+                
+                updatedBeams[beam.key - 1, default: 0] += beamValue
+                updatedBeams[beam.key + 1, default: 0] += beamValue
+            } else {
+                updatedBeams[beam.key, default: 0] += beamValue
+            }
+        }
+        beams = updatedBeams
+    }
+    
+    let pathCount = beams
+        .values
+        .reduce(0, +)
+    
+    return (pathCount, splitCount)
 }
 
 fileprivate func addBeamValue(_ value: Int, at coord: Vector, to resultMatrix: inout Matrix<Int>) {
