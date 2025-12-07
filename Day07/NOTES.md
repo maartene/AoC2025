@@ -13,3 +13,4 @@
     - ❌ Recursive: try and find the way 'back up' starting from the bottom. The idea was to split the problem into smaller problems and then use memoization for performance. However, was not able to get the correct result.
     - ❌ While instering into beam, keep duplicates. Didn't implement this one.
     - ✅ After doing some pen and paper examples, I found I could a track of how strong a beam is. I.e. multiple paths would be a stronger beam. And using this value to imprint a value into a result matrix whereever a beam comes.
+- ✅ calculation for part 1 and part 2 can be combined into one if instead of using a set (part 1) and a matrix (part 2), we use a dictionary of [beamPosition: beamStrength]
