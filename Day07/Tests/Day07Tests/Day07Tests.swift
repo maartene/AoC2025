@@ -25,8 +25,8 @@ let exampleInput =
     @Test func `the total number of splits in for the example input should be 21`() {
         #expect(splitCount(in: exampleInput) == 21)
     }
-}
-
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    
+    @Test func `the total number of splits in for the actual input should be 1660`() {
+        #expect(splitCount(in: input) == 1660)
+    }
 }
