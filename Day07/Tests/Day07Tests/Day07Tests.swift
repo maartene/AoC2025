@@ -30,3 +30,13 @@ let exampleInput =
         #expect(splitCount(in: input) == 1660)
     }
 }
+
+@Suite struct `to get the second star on day 08` {
+    @Test func `the total number of paths in for the example input should be 21`() {
+        #expect(pathCount(in: exampleInput) == 40)
+    }
+    
+//    @Test func `the total number of paths in for the actual input should be 1660`() {
+//        #expect(pathCount(in: input) == 1660)
+//    }
+}

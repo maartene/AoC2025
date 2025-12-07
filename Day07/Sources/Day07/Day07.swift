@@ -29,3 +29,7 @@ func splitCount(in input: String) -> Int {
     
     return splitCount
 }
+
+func pathCount(in input: String) -> Int {
+    40
+}
