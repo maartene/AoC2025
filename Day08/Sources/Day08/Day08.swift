@@ -108,21 +108,24 @@ struct Vector3: Equatable, Hashable {
 }
 
 struct Pair: Equatable, Hashable {
+    let v1: Vector3
+    let v2: Vector3
+    let distance: Double
+
+    init(v1: Vector3, v2: Vector3) {
+        self.v1 = v1
+        self.v2 = v2
+        self.distance = v1.distanceTo(v2)
+    }
+    
     static func == (lhs: Pair, rhs: Pair) -> Bool {
         lhs.v1 == rhs.v1 && lhs.v2 == rhs.v2 ||
         lhs.v1 == rhs.v2 && lhs.v2 == rhs.v1
     }
     
-    let v1: Vector3
-    let v2: Vector3
-    
     func hash(into hasher: inout Hasher) {
         let set = Set([v1, v2])
         hasher.combine(set)
-    }
-    
-    var distance: Double {
-        v1.distanceTo(v2)
     }
 }
 
