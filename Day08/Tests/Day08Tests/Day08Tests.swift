@@ -25,10 +25,6 @@ let exampleInput =
 425,690,689
 """
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-}
-
 @Suite struct `to get the first star on day 08` {
     @Test func `the sizes of the three largest circuits multiplied together for the example input should be 40`() {
         #expect(part1(exampleInput) == 40)
