@@ -14,27 +14,18 @@ func part2(_ input: String) -> Int {
 
 private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) -> (circuitSizeMultiple: Int, firstPair: Pair?) {
     let junctionBoxes = loadJunctionBoxes(input)
+    let sortedPairsOfJunctionBoxes = Set(junctionBoxes.combinations(ofCount: 2)
+        .map { combination in
+            Pair(v1: combination[0], v2: combination[1])
+        }) // create a set of all possible pairs
+        .sorted(by: { $0.distance < $1.distance })
     
     var circuits = Circuits(junctionBoxes: junctionBoxes)
-    
-    let junctionBoxPairs = Set(junctionBoxes.combinations(ofCount: 2)
-        .map {
-            Pair(v1: $0[0], v2: $0[1])
-        }
-                               )
-    let pairsIncludingDistance = junctionBoxPairs.map { pair in
-        let distance = pair.v1.distanceTo(pair.v2)
-        return (pair, distance)
-    }
-    
-    let sortedPairs = pairsIncludingDistance.sorted(by: { $0.1 < $1.1 })
-        .map { $0.0 }
-        
-    var firstPairToComplete: Pair?
+    var firstPairToCompleteCircuit: Pair?
     
     // try and combine circuits
-    for i in 0 ..< min(numberOfPairsToConnect, sortedPairs.count) {
-        let pair = sortedPairs[i]
+    for i in 0 ..< min(numberOfPairsToConnect, sortedPairsOfJunctionBoxes.count) {
+        let pair = sortedPairsOfJunctionBoxes[i]
         let circuit1 = circuits.find(containing: pair.v1)
         let circuit2 = circuits.find(containing: pair.v2)
         
@@ -42,8 +33,8 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
             circuits.merge(circuit1, circuit2)
         }
         
-        if circuits.count == 1, firstPairToComplete == nil {
-            firstPairToComplete = pair
+        if circuits.count == 1, firstPairToCompleteCircuit == nil {
+            firstPairToCompleteCircuit = pair
         }
     }
     
@@ -52,7 +43,7 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
         .prefix(3)
         .reduce(1, *)
     
-    return (threeLargest, firstPairToComplete)
+    return (threeLargest, firstPairToCompleteCircuit)
 }
 
 struct Circuits {
@@ -128,6 +119,10 @@ struct Pair: Equatable, Hashable {
     func hash(into hasher: inout Hasher) {
         let set = Set([v1, v2])
         hasher.combine(set)
+    }
+    
+    var distance: Double {
+        v1.distanceTo(v2)
     }
 }
 
