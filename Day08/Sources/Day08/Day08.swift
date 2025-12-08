@@ -3,6 +3,16 @@ import Shared
 import Algorithms
 
 func part1(_ input: String, numberOfPairsToConnect: Int) -> Int {
+    connectJunctionBoxes(input, numberOfPairsToConnect: numberOfPairsToConnect).circuitSizeMultiple
+}
+
+func part2(_ input: String) -> Int {
+    let result = connectJunctionBoxes(input, numberOfPairsToConnect: Int.max).firstPair!
+    
+    return result.v1.x * result.v2.x
+}
+
+private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) -> (circuitSizeMultiple: Int, firstPair: Pair?) {
     let junctionBoxes = loadJunctionBoxes(input)
     
     var circuits = Set(junctionBoxes.map {
@@ -21,11 +31,12 @@ func part1(_ input: String, numberOfPairsToConnect: Int) -> Int {
     
     let sortedPairs = pairsIncludingDistance.sorted(by: { $0.1 < $1.1 })
         .map { $0.0 }
+        
+    var firstPairToComplete: Pair?
     
     // try and combine circuits
-    for i in 0 ..< numberOfPairsToConnect {
+    for i in 0 ..< min(numberOfPairsToConnect, sortedPairs.count) {
         let pair = sortedPairs[i]
-        print(circuits.map { $0.junctionBoxes.count })
         let circuit1 = circuits.first(where: { $0.junctionBoxes.contains(pair.v1) })
         let circuit2 = circuits.first(where: { $0.junctionBoxes.contains(pair.v2) })
         
@@ -36,19 +47,19 @@ func part1(_ input: String, numberOfPairsToConnect: Int) -> Int {
             circuit1.junctionBoxes = circuit1.junctionBoxes.union(circuit2.junctionBoxes)
             circuits.insert(circuit1)
         }
+        
+        if circuits.count == 1, firstPairToComplete == nil {
+            firstPairToComplete = pair
+        }
     }
     
     let circuitSizes = circuits.map { $0.junctionBoxes.count }
      
-    let expectedCircuitSizes: Set = [
-        5, 4, 2, 2, 1, 1, 1, 1, 1, 1, 1
-    ]
-    
     let threeLargest = circuitSizes.sorted(by: >)
         .prefix(3)
         .reduce(1, *)
     
-    return threeLargest
+    return (threeLargest, firstPairToComplete)
 }
 
 struct Circuit: Equatable, Hashable {

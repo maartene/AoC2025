@@ -34,3 +34,13 @@ let exampleInput =
         #expect(part1(input, numberOfPairsToConnect: 1000) == 103488)
     }
 }
+
+@Suite struct `to get the second star on day 08` {
+    @Test func `the last two boxed connected x coordinates multiplied together should be 25272`() {
+        #expect(part2(exampleInput) == 25272)
+    }
+    
+    @Test func `the last two boxed connected x coordinates multiplied together for the actual input should be 8759985540`() {
+        #expect(part2(input) == 8759985540)
+    }
+}
