@@ -27,6 +27,11 @@ let exampleInput =
 
 @Suite struct `to get the first star on day 08` {
     @Test func `the sizes of the three largest circuits multiplied together for the example input should be 40`() {
-        #expect(part1(exampleInput) == 40)
+        #expect(part1(exampleInput, maxIterations: 11) == 40)
+    }
+    
+    // 521600000 too high
+    @Test func `the sizes of the three largest circuits multiplied together for the actual input should be 40`() {
+        #expect(part1(input) == 40)
     }
 }

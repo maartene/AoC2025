@@ -1,8 +1,8 @@
-public func convertStringToIntMatrix(_ input: String) -> [[Int]] {
+public func convertStringToIntMatrix(_ input: String, separator: Character = " ") -> [[Int]] {
     let lines = input.split(separator: "\n").map(String.init)
 
     let matrix = lines.map { line in
-        line.split(separator: " ")
+        line.split(separator: separator)
             .map(String.init)
             .compactMap(Int.init)
     }
