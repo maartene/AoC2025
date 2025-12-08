@@ -40,12 +40,11 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
         let circuit1 = circuits.first(where: { $0.junctionBoxes.contains(pair.v1) })
         let circuit2 = circuits.first(where: { $0.junctionBoxes.contains(pair.v2) })
         
-        if var circuit1, let circuit2, circuit1 != circuit2 {
+        if let circuit1, let circuit2, circuit1 != circuit2 {
             // combine circuits
             circuits.remove(circuit1)
             circuits.remove(circuit2)
-            circuit1.junctionBoxes = circuit1.junctionBoxes.union(circuit2.junctionBoxes)
-            circuits.insert(circuit1)
+            circuits.insert(circuit1.combineWith(circuit2))
         }
         
         if circuits.count == 1, firstPairToComplete == nil {
@@ -63,7 +62,11 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
 }
 
 struct Circuit: Equatable, Hashable {
-    var junctionBoxes: Set<Vector3>
+    let junctionBoxes: Set<Vector3>
+    
+    func combineWith(_ other: Circuit) -> Circuit {
+        Circuit(junctionBoxes: junctionBoxes.union(other.junctionBoxes))
+    }
 }
 
 struct Vector3: Equatable, Hashable {
