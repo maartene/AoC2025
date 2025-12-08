@@ -15,9 +15,7 @@ func part2(_ input: String) -> Int {
 private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) -> (circuitSizeMultiple: Int, firstPair: Pair?) {
     let junctionBoxes = loadJunctionBoxes(input)
     
-    var circuits = Set(junctionBoxes.map {
-        Circuit(junctionBoxes: [$0])
-    })
+    var circuits = Circuits(junctionBoxes: junctionBoxes)
     
     let junctionBoxPairs = Set(junctionBoxes.combinations(ofCount: 2)
         .map {
@@ -37,14 +35,11 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
     // try and combine circuits
     for i in 0 ..< min(numberOfPairsToConnect, sortedPairs.count) {
         let pair = sortedPairs[i]
-        let circuit1 = circuits.first(where: { $0.contains(junctionBox: pair.v1) })
-        let circuit2 = circuits.first(where: { $0.contains(junctionBox: pair.v2) })
+        let circuit1 = circuits.find(containing: pair.v1)
+        let circuit2 = circuits.find(containing: pair.v2)
         
         if let circuit1, let circuit2, circuit1 != circuit2 {
-            // combine circuits
-            circuits.remove(circuit1)
-            circuits.remove(circuit2)
-            circuits.insert(circuit1.combineWith(circuit2))
+            circuits.merge(circuit1, circuit2)
         }
         
         if circuits.count == 1, firstPairToComplete == nil {
@@ -52,13 +47,40 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
         }
     }
     
-    let circuitSizes = circuits.map { $0.size }
-     
-    let threeLargest = circuitSizes.sorted(by: >)
+    let threeLargest = circuits.circuitSizes
+        .sorted(by: >)
         .prefix(3)
         .reduce(1, *)
     
     return (threeLargest, firstPairToComplete)
+}
+
+struct Circuits {
+    private var circuits: Set<Circuit>
+    
+    init(junctionBoxes: any Collection<Vector3>) {
+        self.circuits = Set(
+            junctionBoxes.map { Circuit(junctionBoxes: [$0]) }
+        )
+    }
+    
+    func find(containing junctionBox: Vector3) -> Circuit? {
+        circuits.first { $0.contains(junctionBox: junctionBox) }
+    }
+    
+    mutating func merge(_ circuit1: Circuit, _ circuit2: Circuit) {
+        circuits.remove(circuit1)
+        circuits.remove(circuit2)
+        circuits.insert(circuit1.combineWith(circuit2))
+    }
+    
+    var count: Int {
+        circuits.count
+    }
+    
+    var circuitSizes: [Int] {
+        circuits.map { $0.size }
+    }
 }
 
 struct Circuit: Equatable, Hashable {
