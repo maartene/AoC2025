@@ -37,8 +37,8 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
     // try and combine circuits
     for i in 0 ..< min(numberOfPairsToConnect, sortedPairs.count) {
         let pair = sortedPairs[i]
-        let circuit1 = circuits.first(where: { $0.junctionBoxes.contains(pair.v1) })
-        let circuit2 = circuits.first(where: { $0.junctionBoxes.contains(pair.v2) })
+        let circuit1 = circuits.first(where: { $0.contains(junctionBox: pair.v1) })
+        let circuit2 = circuits.first(where: { $0.contains(junctionBox: pair.v2) })
         
         if let circuit1, let circuit2, circuit1 != circuit2 {
             // combine circuits
@@ -52,7 +52,7 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
         }
     }
     
-    let circuitSizes = circuits.map { $0.junctionBoxes.count }
+    let circuitSizes = circuits.map { $0.size }
      
     let threeLargest = circuitSizes.sorted(by: >)
         .prefix(3)
@@ -62,10 +62,22 @@ private func connectJunctionBoxes(_ input: String, numberOfPairsToConnect: Int) 
 }
 
 struct Circuit: Equatable, Hashable {
-    let junctionBoxes: Set<Vector3>
+    private let junctionBoxes: Set<Vector3>
+    
+    init(junctionBoxes: Set<Vector3>) {
+        self.junctionBoxes = junctionBoxes
+    }
     
     func combineWith(_ other: Circuit) -> Circuit {
         Circuit(junctionBoxes: junctionBoxes.union(other.junctionBoxes))
+    }
+    
+    var size: Int {
+        junctionBoxes.count
+    }
+    
+    func contains(junctionBox: Vector3) -> Bool {
+        junctionBoxes.contains(junctionBox)
     }
 }
 
