@@ -17,4 +17,8 @@ let exampleInput =
     @Test func `the largest rectangle area for the example input should be 50`() {
         #expect(largestRectangleArea(in: exampleInput) == 50)
     }
+    
+    @Test func `the largest rectangle area for the actual input should be 4755429952`() {
+        #expect(largestRectangleArea(in: input) == 4755429952)
+    }
 }
