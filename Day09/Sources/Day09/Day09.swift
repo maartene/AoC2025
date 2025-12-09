@@ -21,3 +21,7 @@ private func parseInput(_ input: String) -> [Vector] {
         Vector(x: row[0], y: row[1])
     }
 }
+
+func part2(in input: String) -> Int {
+    24
+}

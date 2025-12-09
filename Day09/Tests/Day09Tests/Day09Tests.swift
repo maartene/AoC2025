@@ -22,3 +22,9 @@ let exampleInput =
         #expect(largestRectangleArea(in: input) == 4755429952)
     }
 }
+
+@Suite struct `to get the second star on day 09` {
+    @Test func `the largest rectangle area for the example input should be 24`() {
+        #expect(part2(in: exampleInput) == 24)
+    }
+}
