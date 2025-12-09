@@ -3,9 +3,8 @@ import Shared
 @main
 struct Day09 {
     static func main() {
-        let redCarpetTiles = parseInput(input)
-        let greenCarpetTiles = getGreenCarpetPositions(from: redCarpetTiles, startPoint: Vector(x: 80000, y: 40000))
-        print(greenCarpetTiles.count)
+        let area = part2(in: input, startPoint: Vector(x: 50302, y: 1906), endY: 49476)
+        print(area)
     }
 }
 
@@ -31,21 +30,33 @@ func parseInput(_ input: String) -> [Vector] {
     }
 }
 
-func part2(in input: String, startPoint: Vector) -> Int {
+func part2(in input: String, startPoint: Vector, endY: Int) -> Int {
     let redCarpetPositions = parseInput(input)
     let greenCarpetPositions = getGreenCarpetPositions(from: redCarpetPositions, startPoint: startPoint)
     
     var maxArea = 0
-    for p1 in redCarpetPositions {
-        for p2 in redCarpetPositions {
-            if testInnerRectangleArea(p1: p1, p2: p2, redCarpetPositions: redCarpetPositions, greenCarpetPositions: greenCarpetPositions) {
-                let area = abs(1 + p1.x - p2.x) * abs(1 + p1.y - p2.y)
-                if area > maxArea {
-                    maxArea = area
-                    print("New maximum: \(maxArea) for coordinated: \(p1) and \(p2)")
-                }
-            }
+    print("Startpoint: \(startPoint), endY: \(endY)")
+    
+    for y in startPoint.y ..< endY {
+        var x = startPoint.x
+        while greenCarpetPositions.contains(Vector(x: x, y: y)) == false {
+            x -= 1
         }
+        let minX = x
+        
+        // grow right
+        x = startPoint.x
+        while greenCarpetPositions.contains(Vector(x: x, y: y)) == false {
+            x += 1
+        }
+        let maxX = x
+        
+        let area = abs(maxX + 2 - minX) * abs(1 + endY - y)
+        if area > maxArea {
+            print("Found new max area: \(area) \(minX)...\(maxX)  \(y)...\(endY)")
+            maxArea = max(area, maxArea)
+        }
+        
     }
     
     return maxArea
@@ -84,25 +95,25 @@ func getGreenCarpetPositions(from redCarpetPositions: [Vector], startPoint: Vect
             }
         }
     }
-    
-    // find point within polygon
-    let minX = redCarpetPositions.map { $0.x }.min()!
-    let minY = redCarpetPositions.map { $0.y }.min()!
-    let maxX = redCarpetPositions.map { $0.x }.max()!
-    let maxY = redCarpetPositions.map { $0.y }.max()!
-    
-    // flood fill rest of polygon
-    var fill: Set = [startPoint]
-    while let point = fill.popFirst() {
-        result.insert(point)
-        let neighbours = point.neighbours
-            .filter {
-                $0.x >= minX && $0.x <= maxX && $0.y >= minY && $0.y <= maxY
-            }
-            .filter { result.contains($0) == false }
-        
-        fill = fill.union(neighbours)
-    }
+//    
+//    // find point within polygon
+//    let minX = redCarpetPositions.map { $0.x }.min()!
+//    let minY = redCarpetPositions.map { $0.y }.min()!
+//    let maxX = redCarpetPositions.map { $0.x }.max()!
+//    let maxY = redCarpetPositions.map { $0.y }.max()!
+//    
+//    // flood fill rest of polygon
+//    var fill: Set = [startPoint]
+//    while let point = fill.popFirst() {
+//        result.insert(point)
+//        let neighbours = point.neighbours
+//            .filter {
+//                $0.x >= minX && $0.x <= maxX && $0.y >= minY && $0.y <= maxY
+//            }
+//            .filter { result.contains($0) == false }
+//        
+//        fill = fill.union(neighbours)
+//    }
     printCarpets(carpetPositions: result)
         
     return result

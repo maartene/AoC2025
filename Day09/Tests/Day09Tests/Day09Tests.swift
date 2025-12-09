@@ -26,7 +26,12 @@ let exampleInput =
 
 @Suite struct `to get the second star on day 09` {
     @Test func `the largest rectangle area for the example input should be 24`() {
-        #expect(part2(in: exampleInput, startPoint: Vector(x: 9, y: 2)) == 24)
+        #expect(part2(in: exampleInput, startPoint: Vector(x: 9, y: 2), endY: 5) == 24)
+    }
+    
+    // 2323640150 too high
+    @Test func `the largest rectangle area for the actual input should be 24`() {
+        #expect(part2(in: input, startPoint: Vector(x: 50302, y: 1906), endY: 49476) == 24)
     }
     
 //    @Test func `greentile count`() {
