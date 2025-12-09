@@ -1,5 +1,14 @@
 import Shared
 
+@main
+struct Day09 {
+    static func main() {
+        let redCarpetTiles = parseInput(input)
+        let greenCarpetTiles = getGreenCarpetPositions(from: redCarpetTiles, startPoint: Vector(x: 80000, y: 40000))
+        print(greenCarpetTiles.count)
+    }
+}
+
 func largestRectangleArea(in input: String) -> Int {
     let positions = parseInput(input)
     
@@ -22,9 +31,9 @@ func parseInput(_ input: String) -> [Vector] {
     }
 }
 
-func part2(in input: String) -> Int {
+func part2(in input: String, startPoint: Vector) -> Int {
     let redCarpetPositions = parseInput(input)
-    let greenCarpetPositions = getGreenCarpetPositions(from: redCarpetPositions)
+    let greenCarpetPositions = getGreenCarpetPositions(from: redCarpetPositions, startPoint: startPoint)
     
     var maxArea = 0
     for p1 in redCarpetPositions {
@@ -57,7 +66,7 @@ func testInnerRectangleArea(p1: Vector, p2: Vector, redCarpetPositions: [Vector]
     }
 }
 
-func getGreenCarpetPositions(from redCarpetPositions: [Vector]) -> Set<Vector> {
+func getGreenCarpetPositions(from redCarpetPositions: [Vector], startPoint: Vector) -> Set<Vector> {
     var result = Set<Vector>()
     for i in 0 ..< redCarpetPositions.count {
         let p1 = redCarpetPositions[i]
@@ -82,22 +91,8 @@ func getGreenCarpetPositions(from redCarpetPositions: [Vector]) -> Set<Vector> {
     let maxX = redCarpetPositions.map { $0.x }.max()!
     let maxY = redCarpetPositions.map { $0.y }.max()!
     
-    print("trying to find a point within the polygon")
-    
-    var startPoint: Vector?
-    while startPoint == nil {
-        let testPoint = Vector(x: Int.random(in: minX...maxX), y: Int.random(in: minY ... maxY))
-        if isWithinPolygon(testPoint, polygon: redCarpetPositions, maxX: maxX) {
-            startPoint = testPoint
-        }
-    }
-    
-    print("found: \(startPoint!)")
-    
-    startPoint = Vector(x: 9, y: 2)
-    
     // flood fill rest of polygon
-    var fill: Set = [startPoint!]
+    var fill: Set = [startPoint]
     while let point = fill.popFirst() {
         result.insert(point)
         let neighbours = point.neighbours

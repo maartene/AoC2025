@@ -1,5 +1,6 @@
 import Testing
 @testable import Day09
+import Shared
 
 let exampleInput =
 """
@@ -25,12 +26,12 @@ let exampleInput =
 
 @Suite struct `to get the second star on day 09` {
     @Test func `the largest rectangle area for the example input should be 24`() {
-        #expect(part2(in: exampleInput) == 24)
+        #expect(part2(in: exampleInput, startPoint: Vector(x: 9, y: 2)) == 24)
     }
     
 //    @Test func `greentile count`() {
 //        let redCarpetTiles = parseInput(input)
-//        let greenCarpetTiles = getGreenCarpetPositions(from: redCarpetTiles)
+//        let greenCarpetTiles = getGreenCarpetPositions(from: redCarpetTiles, startPodxint: Vector(x: 10000, y: 60000))
 //        print(greenCarpetTiles.count)
 //        
 //    }
