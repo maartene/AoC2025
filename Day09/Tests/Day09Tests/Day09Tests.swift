@@ -27,4 +27,11 @@ let exampleInput =
     @Test func `the largest rectangle area for the example input should be 24`() {
         #expect(part2(in: exampleInput) == 24)
     }
+    
+//    @Test func `greentile count`() {
+//        let redCarpetTiles = parseInput(input)
+//        let greenCarpetTiles = getGreenCarpetPositions(from: redCarpetTiles)
+//        print(greenCarpetTiles.count)
+//        
+//    }
 }

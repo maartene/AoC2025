@@ -119,3 +119,10 @@ extension Vector {
         }
     }
 }
+
+extension Vector: CustomStringConvertible {
+    public var description: String {
+        "(\(x),\(y))"
+    }
+    
+}

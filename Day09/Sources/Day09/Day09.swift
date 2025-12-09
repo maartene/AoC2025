@@ -14,7 +14,7 @@ func largestRectangleArea(in input: String) -> Int {
     return maxArea
 }
 
-private func parseInput(_ input: String) -> [Vector] {
+func parseInput(_ input: String) -> [Vector] {
     let matrix = convertStringToIntMatrix(input, separator: ",")
     
     return matrix.map { row in
@@ -23,5 +23,112 @@ private func parseInput(_ input: String) -> [Vector] {
 }
 
 func part2(in input: String) -> Int {
-    24
+    let redCarpetPositions = parseInput(input)
+    let greenCarpetPositions = getGreenCarpetPositions(from: redCarpetPositions)
+    
+    var maxArea = 0
+    for p1 in redCarpetPositions {
+        for p2 in redCarpetPositions {
+            if testInnerRectangleArea(p1: p1, p2: p2, redCarpetPositions: redCarpetPositions, greenCarpetPositions: greenCarpetPositions) {
+                let area = abs(1 + p1.x - p2.x) * abs(1 + p1.y - p2.y)
+                if area > maxArea {
+                    maxArea = area
+                    print("New maximum: \(maxArea) for coordinated: \(p1) and \(p2)")
+                }
+            }
+        }
+    }
+    
+    return maxArea
+}
+
+func testInnerRectangleArea(p1: Vector, p2: Vector, redCarpetPositions: [Vector], greenCarpetPositions: Set<Vector>) -> Bool {
+    
+    var rectangeCoordinates = Set<Vector>()
+    for row in min(p1.y, p2.y) ... max(p1.y, p2.y) {
+        for col in min(p1.x, p2.x) ... max(p1.x, p2.x) {
+            rectangeCoordinates.insert(Vector(x: col, y: row))
+        }
+    }
+    
+    // all the other ones should be fully red or fully green. i.e. don't overlap
+    return rectangeCoordinates.allSatisfy { coordinate in
+        redCarpetPositions.contains(coordinate) || greenCarpetPositions.contains(coordinate)
+    }
+}
+
+func getGreenCarpetPositions(from redCarpetPositions: [Vector]) -> Set<Vector> {
+    var result = Set<Vector>()
+    for i in 0 ..< redCarpetPositions.count {
+        let p1 = redCarpetPositions[i]
+        let p2 = redCarpetPositions[(i + 1) % redCarpetPositions.count]
+        
+        if p1.x == p2.x {
+            // connect horizontally
+            for y in min(p1.y, p2.y) ... max(p1.y, p2.y) {
+                result.insert(Vector(x: p1.x, y: y))
+            }
+        } else {
+            // connect vertically
+            for x in min(p1.x, p2.x) ... max(p1.x, p2.x) {
+                result.insert(Vector(x: x, y: p1.y))
+            }
+        }
+    }
+    
+    // find point within polygon
+    let minX = redCarpetPositions.map { $0.x }.min()!
+    let minY = redCarpetPositions.map { $0.y }.min()!
+    let maxX = redCarpetPositions.map { $0.x }.max()!
+    let maxY = redCarpetPositions.map { $0.y }.max()!
+    
+    print("trying to find a point within the polygon")
+    
+    var startPoint: Vector?
+    while startPoint == nil {
+        let testPoint = Vector(x: Int.random(in: minX...maxX), y: Int.random(in: minY ... maxY))
+        if isWithinPolygon(testPoint, polygon: redCarpetPositions, maxX: maxX) {
+            startPoint = testPoint
+        }
+    }
+    
+    print("found: \(startPoint!)")
+    
+    startPoint = Vector(x: 9, y: 2)
+    
+    // flood fill rest of polygon
+    var fill: Set = [startPoint!]
+    while let point = fill.popFirst() {
+        result.insert(point)
+        let neighbours = point.neighbours
+            .filter {
+                $0.x >= minX && $0.x <= maxX && $0.y >= minY && $0.y <= maxY
+            }
+            .filter { result.contains($0) == false }
+        
+        fill = fill.union(neighbours)
+    }
+    printCarpets(carpetPositions: result)
+        
+    return result
+}
+
+func isWithinPolygon(_ testPoint: Vector, polygon: [Vector], maxX: Int) -> Bool {
+    var count = 0
+    for _ in testPoint.x ... maxX {
+        if polygon.contains(testPoint) {
+            count += 1
+        }
+    }
+    return count.isMultiple(of: 2) == false
+}
+
+func printCarpets(carpetPositions: Set<Vector>) {
+    for y in 0 ..< 16 {
+        var line = ""
+        for x in 0 ..< 24 {
+            line += carpetPositions.contains(Vector(x: x, y: y)) ? "#" : "."
+        }
+        print(line)
+    }
 }
