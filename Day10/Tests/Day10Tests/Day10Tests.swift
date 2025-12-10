@@ -10,10 +10,12 @@ import Testing
         let machine = Machine(
             lights: [false, true, true, false],
             rules: [
-                [3], [1,3],[2],[2,3],[0,2],[0,1],[3,5,4,7]
+                [3], [1,3],[2],[2,3],[0,2],[0,1]
             ]
         )
         
-        #expect(machine.minimumButtonPresses() == 2)
+        let result = machine.minimumButtonPresses()
+        
+        #expect(result == 2)
     }
 }
