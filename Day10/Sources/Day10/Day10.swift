@@ -2,14 +2,19 @@
 // https://docs.swift.org/swift-book
 
 func fewestNumberOfPresses(in input: String) -> Int {
-    7
+    let machines = input.split(separator: "\n")
+        .map { Machine($0) }
+    
+    let minimumPresses = machines.map { $0.minimumButtonPresses() }
+    
+    return minimumPresses.reduce(0, +)
 }
 
 struct Machine {
     let lights: [Bool]
     let rules: [Set<Int>]
     
-    init(_ machineString: String) {
+    init(_ machineString: any StringProtocol) {
         let parts = machineString.split(separator: " ")
         var rules = [Set<Int>]()
         
@@ -24,7 +29,7 @@ struct Machine {
             case "(":
                 let rule = part.dropFirst().dropLast()
                     .split(separator: ",")
-                    .compactMap { Int($0) }
+                    .compactMap { Int(String($0)) }
                 rules.append(Set(rule))
             default:
                 break
