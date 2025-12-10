@@ -44,10 +44,16 @@ let exampleInput =
 
 @Suite struct `to get the second star on day 10` {
     @Test(arguments: [
-        ("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}", 10)
+        ("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}", 10),
+        ("[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}", 12),
+        
     ]) func `the fewest number of presses for the machines should be as expected`(testcase: (machineString: String, expectedPressCount: Int)) {
         let machine = Machine(testcase.machineString)
         
-        #expect(machine.minimumButtonPressesToMeetJoltageRequirement() == 10)
+        #expect(machine.minimumButtonPressesToMeetJoltageRequirement() == testcase.expectedPressCount)
+    }
+    
+    @Test func `the fewest number of presses for the machines in the example input should be 33`() {
+        #expect(part2(in: exampleInput) == 33)
     }
 }

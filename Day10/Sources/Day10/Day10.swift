@@ -23,6 +23,20 @@ func part1(in input: String) -> Int {
     return minimumPresses.reduce(0, +)
 }
 
+func part2(in input: String) -> Int {
+    let machines = input.split(separator: "\n")
+        .map { Machine($0) }
+    
+    var count = 0
+    let minimumPresses = machines.map {
+        print("Working on machine \(count) of \(machines.count)")
+        count += 1
+        return $0.minimumButtonPressesToMeetJoltageRequirement()
+    }
+    
+    return minimumPresses.reduce(0, +)
+}
+
 struct Machine {
     let lights: [Bool]
     let rules: [Set<Int>]
@@ -86,7 +100,46 @@ struct Machine {
     }
     
     func minimumButtonPressesToMeetJoltageRequirement() -> Int {
-        10
+        let startState = joltageRequirements.map { _ in 0 }
+        var queue: [([Int], Int)] = [(startState, 0)]  // (current point, distance)
+        var visited: Set<[Int]> = []
+        
+        while queue.isEmpty == false {
+            let (current, pressCount) = queue.removeFirst()
+            visited.insert(current)
+            
+            // Check if we met the requirements
+            if current == joltageRequirements {
+                return pressCount
+            }
+            
+            // if one of the joltageRequirements is overcapped, this is an invalid route and should not continue
+            var skip = false
+            for i in 0 ..< joltageRequirements.count {
+                if current[i] > joltageRequirements[i] {
+                    skip = true
+                }
+            }
+            
+            if skip {
+                
+            } else {
+                // enqueue all possible button presses
+                rules.forEach { rule in
+                    var newCurrent = current
+                    for buttonIndex in rule {
+                        newCurrent[buttonIndex] += 1
+                    }
+                    if visited.contains(newCurrent) == false && queue.contains(where: {
+                        $0.0 == newCurrent && $0.1 == pressCount + 1
+                    }) == false {
+                        queue.append((newCurrent, pressCount + 1))
+                    }
+                }
+            }
+        }
+        
+        fatalError("Should have found a solution")
     }
 }
 
