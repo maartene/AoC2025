@@ -38,4 +38,15 @@ let exampleInput =
     @Test func `the fewest number of example presses in the example input should be 7`() {
         #expect(fewestNumberOfPresses(in: exampleInput) == 7)
     }
+    
+    @Test func `maximum number of lights`() {
+        let machines = input.split(separator: "\n")
+            .compactMap { Machine($0) }
+        
+        let maxRules = machines.map { $0.rules.count }.max()!
+        let maxLights = machines.map { $0.lights.count }.max()!
+        
+        print(maxRules, maxLights)
+        
+    }
 }
