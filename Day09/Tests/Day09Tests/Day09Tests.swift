@@ -26,12 +26,35 @@ let exampleInput =
 
 @Suite struct `to get the second star on day 09` {
     @Test func `the largest rectangle area for the example input should be 24`() {
-        #expect(part2(in: exampleInput, startPoint: Vector(x: 9, y: 2), endY: 5) == 24)
+        #expect(part2(in: exampleInput) == 24)
     }
-    
+
+    // 1432297642
+    // 1383178986
+    // 1383178986
+    // 2939369478
+    // 1383390016 not correct
+    // 1173523000 too low
+    // 668574442 too low
     // 2323640150 too high
     @Test func `the largest rectangle area for the actual input should be 24`() {
-        #expect(part2(in: input, startPoint: Vector(x: 50302, y: 1906), endY: 49476) == 24)
+        #expect(part2(in: input) == 24)
+    }
+    
+    @Test func `elipse data`() {
+        let positions = parseInput(input)
+        let minX = positions.map { $0.x }.min()!
+        let minY = positions.map { $0.y }.min()!
+        let maxX = positions.map { $0.x }.max()!
+        let maxY = positions.map { $0.y }.max()!
+        
+        print(minX, minY)
+        
+        let horizontalRadius = (maxX - minX) / 2
+        let verticalRadius = (maxY - minY) / 2
+        
+        print("horizontalRadius: \(horizontalRadius) \nverticalRadius: \(verticalRadius)")
+        
     }
     
 //    @Test func `greentile count`() {

@@ -56,4 +56,13 @@ let exampleInput =
     @Test func `the fewest number of presses for the machines in the example input should be 33`() {
         #expect(part2(in: exampleInput) == 33)
     }
+    
+    @Test(arguments: [
+        "[...#..#..] (2,4,7) (0,1,2,4,8) (2,3) (0,3,4,5,6,7,8) (0,1,5,7) (1,7) (0,2,5,6,7,8) (0,1,3,5,6,7,8) (0,1,3,4,5,6,7,8) (3,4,5,7) (0,3,4,6,7) {51,31,43,65,49,36,45,73,31}",
+        "[##...##.] (0,1,7) (2,3,4,5,6,7) (2) (1,2,3) (0,1,3,4,5,7) (0,2,4,7) (0,1,2,4,6) {30,39,59,51,48,35,26,44}"
+    ]) func `the fewest number of presses for larger machines`(machineString: String) {
+        let machine = Machine(machineString)
+        
+        print(machine.minimumButtonPressesToMeetJoltageRequirement())
+    }
 }

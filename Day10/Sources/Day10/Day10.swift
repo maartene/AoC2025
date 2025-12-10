@@ -1,10 +1,12 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
+import Collections
+
 @main
 struct Day10 {
     static func main() {
-        let fewestNumberOfPresses = part1(in: input)
+        let fewestNumberOfPresses = part2(in: input)
         print(fewestNumberOfPresses)
     }
 }
@@ -69,7 +71,7 @@ struct Machine {
         }
         
         self.lights = lights
-        self.rules = rules
+        self.rules = rules.sorted(by: { $0.count > $1.count })
         self.joltageRequirements = joltageRequirements
     }
     
@@ -101,10 +103,11 @@ struct Machine {
     
     func minimumButtonPressesToMeetJoltageRequirement() -> Int {
         let startState = joltageRequirements.map { _ in 0 }
-        var queue: [([Int], Int)] = [(startState, 0)]  // (current point, distance)
+        var queue: OrderedDictionary<[Int], Int> = [startState: 0]  // (current point, distance)
         var visited: Set<[Int]> = []
         
         while queue.isEmpty == false {
+            print(queue.count)
             let (current, pressCount) = queue.removeFirst()
             visited.insert(current)
             
@@ -130,10 +133,8 @@ struct Machine {
                     for buttonIndex in rule {
                         newCurrent[buttonIndex] += 1
                     }
-                    if visited.contains(newCurrent) == false && queue.contains(where: {
-                        $0.0 == newCurrent && $0.1 == pressCount + 1
-                    }) == false {
-                        queue.append((newCurrent, pressCount + 1))
+                    if visited.contains(newCurrent) == false && queue.keys.contains(newCurrent) == false {
+                        queue[newCurrent] = pressCount + 1
                     }
                 }
             }

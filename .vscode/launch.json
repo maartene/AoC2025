@@ -19,6 +19,26 @@
             "target": "Day04",
             "configuration": "release",
             "preLaunchTask": "swift: Build Release Day04 (Day04)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:AoC2025}/Day10",
+            "name": "Debug Day10 (Day10)",
+            "target": "Day10",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Day10 (Day10)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:AoC2025}/Day10",
+            "name": "Release Day10 (Day10)",
+            "target": "Day10",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Day10 (Day10)"
         }
     ]
 }
