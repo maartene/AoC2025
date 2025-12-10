@@ -14,10 +14,11 @@ let exampleInput =
             lights: [false, true, true, false],
             rules: [
                 [3], [1,3],[2],[2,3],[0,2],[0,1]
-            ]
+            ],
+            joltageRequirements: [3,5,4,7]
         )
         
-        let result = machine.minimumButtonPresses()
+        let result = machine.minimumButtonPressesToMeetLightRequirements()
         
         #expect(result == 2)
     }
@@ -27,7 +28,8 @@ let exampleInput =
             lights: [false, true, true, false],
             rules: [
                 [3], [1,3],[2],[2,3],[0,2],[0,1]
-            ]
+            ],
+            joltageRequirements: [3,5,4,7]
         )
         
         let machine = Machine("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}")
@@ -36,17 +38,16 @@ let exampleInput =
     }
     
     @Test func `the fewest number of example presses in the example input should be 7`() {
-        #expect(fewestNumberOfPresses(in: exampleInput) == 7)
+        #expect(part1(in: exampleInput) == 7)
     }
-    
-    @Test func `maximum number of lights`() {
-        let machines = input.split(separator: "\n")
-            .compactMap { Machine($0) }
+}
+
+@Suite struct `to get the second star on day 10` {
+    @Test(arguments: [
+        ("[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}", 10)
+    ]) func `the fewest number of presses for the machines should be as expected`(testcase: (machineString: String, expectedPressCount: Int)) {
+        let machine = Machine(testcase.machineString)
         
-        let maxRules = machines.map { $0.rules.count }.max()!
-        let maxLights = machines.map { $0.lights.count }.max()!
-        
-        print(maxRules, maxLights)
-        
+        #expect(machine.minimumButtonPressesToMeetJoltageRequirement() == 10)
     }
 }

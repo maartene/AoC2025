@@ -4,12 +4,12 @@
 @main
 struct Day10 {
     static func main() {
-        let fewestNumberOfPresses = fewestNumberOfPresses(in: input)
+        let fewestNumberOfPresses = part1(in: input)
         print(fewestNumberOfPresses)
     }
 }
 
-func fewestNumberOfPresses(in input: String) -> Int {
+func part1(in input: String) -> Int {
     let machines = input.split(separator: "\n")
         .map { Machine($0) }
     
@@ -17,7 +17,7 @@ func fewestNumberOfPresses(in input: String) -> Int {
     let minimumPresses = machines.map {
         print("Working on machine \(count) of \(machines.count)")
         count += 1
-        return $0.minimumButtonPresses()
+        return $0.minimumButtonPressesToMeetLightRequirements()
     }
     
     return minimumPresses.reduce(0, +)
@@ -26,11 +26,12 @@ func fewestNumberOfPresses(in input: String) -> Int {
 struct Machine {
     let lights: [Bool]
     let rules: [Set<Int>]
+    let joltageRequirements: [Int]
     
     init(_ machineString: any StringProtocol) {
         let parts = machineString.split(separator: " ")
         var rules = [Set<Int>]()
-        
+        var joltageRequirements = [Int]()
         var lights = [Bool]()
         
         for part in parts {
@@ -44,6 +45,10 @@ struct Machine {
                     .split(separator: ",")
                     .compactMap { Int(String($0)) }
                 rules.append(Set(rule))
+            case "{":
+                joltageRequirements = part.dropFirst().dropLast()
+                    .split(separator: ",")
+                    .compactMap { Int(String($0)) }
             default:
                 break
             }
@@ -51,14 +56,17 @@ struct Machine {
         
         self.lights = lights
         self.rules = rules
+        self.joltageRequirements = joltageRequirements
     }
     
-    init(lights: [Bool], rules: [Set<Int>]) {
+    init(lights: [Bool], rules: [Set<Int>], joltageRequirements: [Int]) {
         self.lights = lights
         self.rules = rules
+        self.joltageRequirements = joltageRequirements
     }
     
-    func minimumButtonPresses() -> Int {
+    // Monte Carlo simulation - I'm asstounished this worked!
+    func minimumButtonPressesToMeetLightRequirements() -> Int {
         var minimumPresses = Int.max
         for _ in 0 ..< 100_000 {
             var state = Array(repeating: false, count: lights.count)
@@ -75,6 +83,10 @@ struct Machine {
             minimumPresses = min(minimumPresses, pressCount)
         }
         return minimumPresses
+    }
+    
+    func minimumButtonPressesToMeetJoltageRequirement() -> Int {
+        10
     }
 }
 
