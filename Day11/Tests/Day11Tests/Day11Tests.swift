@@ -27,4 +27,8 @@ iii: out
         #expect(connections["ccc"] == ["ddd", "eee", "fff"])
         #expect(connections["fff"] == ["out"])
     }
+    
+    @Test func `the number of paths from you to out for the actual input should be 5`() {
+        #expect(part1(input) == 5)
+    }
 }
