@@ -4,7 +4,24 @@ import Foundation
 // https://docs.swift.org/swift-book
 
 func part1(_ input: String) -> Int {
-    return 5
+    let connections = parseInput(input)
+    
+    var currentPathCount = 0
+    var queue = ["you"]
+    
+    while queue.isEmpty == false {
+        let currentConnection = queue.removeFirst()
+        
+        if currentConnection == "out" {
+            currentPathCount += 1
+        } else {
+            for next in connections[currentConnection]! {
+                queue.append(next)
+            }
+        }
+    }
+    
+    return currentPathCount
 }
 
 func parseInput(_ input: String) -> [String: [String]] {
