@@ -1,4 +1,5 @@
 import Foundation
+import Collections
 
 @main
 struct Day11 {
@@ -37,21 +38,28 @@ func part1(_ input: String) -> Int {
 func part2(_ input: String) -> Int {
     let connections = parseInput(input)
     let fromSvrToFFT = bfs(from: "svr", to: "fft", connections: connections)
+    print("connections from svr to fft: \(fromSvrToFFT)")
     let fromFFTtoDAC = bfs(from: "fft", to: "dac", connections: connections)
+    print("connections from fft to dac: \(fromFFTtoDAC)")
     let fromDacToOut = bfs(from: "dac", to: "out", connections: connections)
+    print("connections from dac to out: \(fromDacToOut)")
     
     return fromSvrToFFT * fromFFTtoDAC * fromDacToOut
 }
 
 func bfs(from: String, to: String, connections: [String: [String]]) -> Int {
-    var queue = [from]
+    var queue:Deque = [from]
     
     var currentPathCount = 0
     while queue.isEmpty == false {
-        let currentConnection = queue.removeLast()
+        let currentConnection = queue.popFirst()!
         
         if currentConnection == to {
             currentPathCount += 1
+            if currentPathCount % 1000 == 0 {
+                print(currentPathCount, queue.count)
+            }
+            
         } else {
             for next in connections[currentConnection] ?? [] {
                 queue.append(next)
