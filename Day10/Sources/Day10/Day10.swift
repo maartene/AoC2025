@@ -1,7 +1,7 @@
 // The Swift Programming Language
 // https://docs.swift.org/swift-book
 
-import Collections
+import Foundation
 
 @main
 struct Day10 {
@@ -102,45 +102,34 @@ struct Machine {
     }
     
     func minimumButtonPressesToMeetJoltageRequirement() -> Int {
-        let startState = joltageRequirements.map { _ in 0 }
-        var queue: OrderedDictionary<[Int], Int> = [startState: 0]  // (current point, distance)
-        var visited: Set<[Int]> = []
-        
-        while queue.isEmpty == false {
-            print(queue.count)
-            let (current, pressCount) = queue.removeFirst()
-            visited.insert(current)
-            
-            // Check if we met the requirements
-            if current == joltageRequirements {
-                return pressCount
-            }
-            
-            // if one of the joltageRequirements is overcapped, this is an invalid route and should not continue
-            var skip = false
-            for i in 0 ..< joltageRequirements.count {
-                if current[i] > joltageRequirements[i] {
-                    skip = true
-                }
-            }
-            
-            if skip {
-                
-            } else {
-                // enqueue all possible button presses
-                rules.forEach { rule in
-                    var newCurrent = current
-                    for buttonIndex in rule {
-                        newCurrent[buttonIndex] += 1
-                    }
-                    if visited.contains(newCurrent) == false && queue.keys.contains(newCurrent) == false {
-                        queue[newCurrent] = pressCount + 1
-                    }
-                }
-            }
-        }
-        
-        fatalError("Should have found a solution")
+    // Call Python Z3 solver
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+    process.arguments = ["python3", "solve_z3.py"]
+    
+    let inputPipe = Pipe()
+    let outputPipe = Pipe()
+    process.standardInput = inputPipe
+    process.standardOutput = outputPipe
+    
+    // Format input: rules then requirements
+    var input = ""
+    for rule in rules {
+        input += rule.sorted().map(String.init).joined(separator: ",") + "\n"
+    }
+    input += "---\n"
+    input += joltageRequirements.map(String.init).joined(separator: ",") + "\n"
+    
+    inputPipe.fileHandleForWriting.write(input.data(using: .utf8)!)
+    inputPipe.fileHandleForWriting.closeFile()
+    
+    try! process.run()
+    process.waitUntilExit()
+    
+    let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
+    let output = String(data: data, encoding: .utf8)!.trimmingCharacters(in: .whitespacesAndNewlines)
+    
+    return Int(output)!
     }
 }
 
