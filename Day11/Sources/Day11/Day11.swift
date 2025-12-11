@@ -14,10 +14,8 @@ func parseInput(_ input: String) -> [String: [String]] {
         let parts = line.split(separator: ":")
         let key = String(parts[0]).trimmingCharacters(in: .whitespacesAndNewlines)
         
-        var values: [String] = []
-        for word in parts[1].split(separator: " ") {
-            values.append(String(word))
-        }
+        let values = parts[1].split(separator: " ")
+            .map { String($0) }
         
         dictionary[key] = values
     }
