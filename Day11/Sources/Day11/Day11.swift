@@ -8,32 +8,10 @@ struct Day11 {
     }
 }
 
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
-
 func part1(_ input: String) -> Int {
     let connections = parseInput(input)
-    
-    var currentPathCount = 0
-    var queue = ["you"]
-    
-    while queue.isEmpty == false {
-        let currentConnection = queue.removeFirst()
-        
-        if currentConnection == "out" {
-            currentPathCount += 1
-        } else {
-            for next in connections[currentConnection]! {
-                queue.append(next)
-            }
-        }
-    }
-    
-    return currentPathCount
+    return bfs(from: "you", to: "out", connections: connections)
 }
-
-
-// from dac to out: 23101
 
 func part2(_ input: String) -> Int {
     let connections = parseInput(input)
@@ -48,26 +26,31 @@ func part2(_ input: String) -> Int {
 }
 
 func bfs(from: String, to: String, connections: [String: [String]]) -> Int {
-    var queue:Deque = [from]
+    var memo: [String: Int] = [:]
     
-    var currentPathCount = 0
-    while queue.isEmpty == false {
-        let currentConnection = queue.popFirst()!
-        
-        if currentConnection == to {
-            currentPathCount += 1
-            if currentPathCount % 1000 == 0 {
-                print(currentPathCount, queue.count)
-            }
-            
-        } else {
-            for next in connections[currentConnection] ?? [] {
-                queue.append(next)
-            }
+    func countPaths(from node: String) -> Int {
+        // If we've already calculated this, return cached result
+        if let cached = memo[node] {
+            return cached
         }
+        
+        // Base case: we've reached the target
+        if node == to {
+            return 1
+        }
+        
+        // Recursive case: sum paths through all neighbors
+        var totalPaths = 0
+        for neighbor in connections[node] ?? [] {
+            totalPaths += countPaths(from: neighbor)
+        }
+        
+        // Cache and return result
+        memo[node] = totalPaths
+        return totalPaths
     }
     
-    return currentPathCount
+    return countPaths(from: from)
 }
 
 func parseInput(_ input: String) -> [String: [String]] {

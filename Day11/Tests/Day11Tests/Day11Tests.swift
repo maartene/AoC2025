@@ -54,8 +54,8 @@ import Testing
     @Test func `the number of valid paths from svr to out for the example input should be 2`() {
         #expect(part2(exampleInput) == 2)
     }
-    
-//    @Test func `gross number of connections from svr to out`() {
-//        print(part2(input))
-//    }
+
+    @Test func `the number of valid paths from svr to out for the actual input should be 423227545768872`() {
+        #expect(part2(input) == 423227545768872)
+    }
 }
