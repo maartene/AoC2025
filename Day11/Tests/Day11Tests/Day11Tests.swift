@@ -23,4 +23,12 @@ iii: out
     @Test func `the number of paths from you to out for the example input should be 5`() {
         #expect(part1(exampleInput) == 5)
     }
+    
+    @Test func `parsing input`() {
+        let connections = parseInput(exampleInput)
+        
+        #expect(connections["you"] == ["bbb", "ccc"])
+        #expect(connections["ccc"] == ["ddd", "eee", "fff"])
+        #expect(connections["fff"] == ["out"])
+    }
 }
