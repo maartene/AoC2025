@@ -1,3 +1,5 @@
+import Foundation
+
 public func convertStringToIntMatrix(_ input: String, separator: Character = " ") -> [[Int]] {
     let lines = input.split(separator: "\n").map(String.init)
 
@@ -28,6 +30,12 @@ public func stringToIntArray(_ string: any StringProtocol) -> [Int] {
     return stringArray.compactMap { Int($0) }
 }
 
+public func extractIntsFromString(_ string: String) -> [Int] {
+    let regex = /[\d+]./
+    return string
+        .matches(of: regex)
+        .compactMap { Int($0.output) }
+}
 
 public func memoize<In: Hashable, Out>(_ f: @escaping (In) -> Out) -> (In) -> Out {
     var memo: [In: Out] = [:]
