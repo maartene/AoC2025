@@ -31,7 +31,7 @@ public func stringToIntArray(_ string: any StringProtocol) -> [Int] {
 }
 
 public func extractIntsFromString(_ string: String) -> [Int] {
-    let regex = /[\d+]./
+    let regex = /-?\d+/
     return string
         .matches(of: regex)
         .compactMap { Int($0.output) }
