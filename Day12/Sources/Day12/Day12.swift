@@ -1,39 +1,38 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+import Foundation
+import Shared
 
-let exampleInput =
-"""
-0:
-###
-##.
-##.
+@main
+struct Day12 {
+    static func main() {
+        let result = numberOfFittingConfigurations(in: input)
+        print(result)
+    }
+}
 
-1:
-###
-##.
-.##
 
-2:
-.##
-###
-##.
-
-3:
-##.
-###
-##.
-
-4:
-###
-#..
-###
-
-5:
-###
-.#.
-###
-
-4x4: 0 0 0 0 2 0
-12x5: 1 0 1 0 2 2
-12x5: 1 0 1 0 3 2
-"""
+func numberOfFittingConfigurations(in input: String) -> Int {
+    let lines = input.split(separator: "\n")
+    
+    let situations = lines.filter { $0.contains("x") }
+    
+    var result = 0
+    for situation in situations {
+        let parts = situation.split(separator: ":")
+        let sizeStrings = parts[0].split(separator: "x")
+        let size1 = Int(sizeStrings[0])!
+        let size2 = Int(sizeStrings[1])!
+        
+        let presentsStrings = parts[1].split(separator: " ")
+        let presentCounts = presentsStrings.compactMap {
+            Int(String($0))
+        }
+        let presentCount = presentCounts.reduce(0, +)
+        
+        if presentCount * 9 <= size1 * size2 {
+            result += 1
+        }
+    }
+    
+    return result
+    
+}

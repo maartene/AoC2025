@@ -2,6 +2,7 @@
 // https://docs.swift.org/swift-book
 
 import Foundation
+import SwiftZ3
 
 @main
 struct Day10 {
@@ -102,34 +103,57 @@ struct Machine {
     }
     
     func minimumButtonPressesToMeetJoltageRequirement() -> Int {
-    // Call Python Z3 solver
-    let process = Process()
-    process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-    process.arguments = ["python3", "solve_z3.py"]
-    
-    let inputPipe = Pipe()
-    let outputPipe = Pipe()
-    process.standardInput = inputPipe
-    process.standardOutput = outputPipe
-    
-    // Format input: rules then requirements
-    var input = ""
-    for rule in rules {
-        input += rule.sorted().map(String.init).joined(separator: ",") + "\n"
-    }
-    input += "---\n"
-    input += joltageRequirements.map(String.init).joined(separator: ",") + "\n"
-    
-    inputPipe.fileHandleForWriting.write(input.data(using: .utf8)!)
-    inputPipe.fileHandleForWriting.closeFile()
-    
-    try! process.run()
-    process.waitUntilExit()
-    
-    let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: .utf8)!.trimmingCharacters(in: .whitespacesAndNewlines)
-    
-    return Int(output)!
+        // Use Swift Z3 solver
+        let config = Z3Config()
+        let context = Z3Context(configuration: config)
+        let solver = context.makeOptimize()
+        
+        // Create integer variables for each button (rule)
+        let buttons = rules.enumerated().map { index, _ -> Z3Int in
+            let buttonName = "b\(index)"
+            return context.makeConstant(name: buttonName)
+        }
+        
+        // Add constraints: each button press count >= 0
+        for button in buttons {
+            solver.add(button >= 0)
+        }
+        
+        // Add constraints: sum of button presses affecting each requirement equals the requirement value
+        for (requirementIndex, requirementValue) in joltageRequirements.enumerated() {
+            let affectingButtons = rules.enumerated().compactMap { ruleIndex, rule -> Z3ArithExpr? in
+                if rule.contains(requirementIndex) {
+                    return buttons[ruleIndex]
+                }
+                return nil
+            }
+            
+            if !affectingButtons.isEmpty {
+                let sum = affectingButtons.reduce(Z3IntValue(0, context: context)) { $0 + $1 }
+                solver.add(sum == Int32(requirementValue))
+            }
+        }
+        
+        // Minimize the total sum of button presses
+        let totalPresses = buttons.reduce(Z3IntValue(0, context: context)) { $0 + $1 }
+        solver.minimize(totalPresses)
+        
+        // Check for solution
+        let result = solver.check()
+        
+        if result == .satisfiable {
+            let model = solver.getModel()
+            let total = buttons.reduce(0) { result, button in
+                if let value = model.eval(button) {
+                    return result + Int(value.intValue)
+                }
+                return result
+            }
+            return total
+        }
+        
+        // If no solution found, return -1 (though problem states there's always a solution)
+        return -1
     }
 }
 
